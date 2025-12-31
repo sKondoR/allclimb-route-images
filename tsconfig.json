@@ -23,10 +23,11 @@
       "@/components/*": ["components/*"],
       "@/models/*": ["models/*"]
     },
-    "baseUrl": ".",
+    "baseUrl": "./src",
     
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
+    "verbatimModuleSyntax": true,
   },
   "include": [
     "next-env.d.ts",

@@ -1,5 +1,6 @@
 import 'reflect-metadata';
 import { DataSource } from 'typeorm';
+import type { ObjectLiteral } from 'typeorm';
 import { Region } from '@/models/Region';
 
 let AppDataSource: DataSource;
@@ -34,8 +35,11 @@ export async function getDataSource(): Promise<DataSource> {
 // For Vercel serverless functions, initialize on demand
 export async function getDatabase() {
   const dataSource = await getDataSource();
+  dataSource.dropDatabase();
   return {
     dataSource,
-    getRepository: (entity: any) => dataSource.getMongoRepository(entity),
+    getMongoRepository: <T extends ObjectLiteral>(entity: new () => T) => {
+      return dataSource.getMongoRepository<T>(entity);
+    },
   };
 }

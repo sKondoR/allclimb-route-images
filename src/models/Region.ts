@@ -1,9 +1,9 @@
-import { Entity, ObjectIdColumn, ObjectId, Column } from 'typeorm';
+import { Entity, Column, PrimaryColumn } from 'typeorm';
 
 @Entity()
 export class Region {
-  @ObjectIdColumn()
-  _id!: ObjectId;
+  @PrimaryColumn()
+  _id!: string;
 
   @Column()
   name!: string;
