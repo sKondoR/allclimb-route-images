@@ -33,7 +33,7 @@ export default function SearchTabs() {
 
   return (
     <div className="border-b border-black/40 text-xl">
-      <TETabs>
+      <TETabs className="mb-0">
         <TETabsItem
           onClick={() => handleTabClick(SEARCH_TABS[0])}
           active={tab === SEARCH_TABS[0]}

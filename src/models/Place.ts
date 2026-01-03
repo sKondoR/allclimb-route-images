@@ -15,6 +15,9 @@ export class Place {
   @Column()
   numroutes!: number;
 
+  @Column({ nullable: true })
+  link?: string;
+
   @Column()
   @Index()
   regionId!: string;

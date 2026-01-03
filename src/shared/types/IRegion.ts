@@ -6,9 +6,4 @@ export interface IRegion {
     season?: string;
     link?: string;
     updatedAt?: Date;
-    children?: IRegionNode[];
 }
-
-export type IRegionNode = IRegion & {
-  isOpen?: boolean;
-};

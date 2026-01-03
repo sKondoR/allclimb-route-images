@@ -1,4 +1,4 @@
-import type { Place } from '@/models';
+import type { Place, Route, Sector } from '@/models';
 
 const extractNumRoutes = (str: string | number): number => {
     if (typeof str === 'number') {
@@ -8,19 +8,26 @@ const extractNumRoutes = (str: string | number): number => {
     return match ? parseInt(match[1], 10) : 0;
 };
 
-export const preparePlaces = (data: { result?: any[]; }, regionId: string, uniqId: string) => Array.isArray(data?.result)
+export const preparePlaces = (data: { result?: any[]; }, id: string, uniqId: string ) => {
+  if (!data?.result) {
+    console.log('preparePlaces error: ', data, id, uniqId);
+  }
+  return Array.isArray(data?.result)
   ? data.result.reduce((acc, el) => {
 
       const numroutes = extractNumRoutes(el.numroutes);
 
       // Проверяем, есть ли уже элемент с таким именем
       const existingIndex = acc.findIndex((item: Place) => item.name === el.name);
+      if (!id) {
+        console.log('preparePlaces no id: ', existingIndex, el);
+      }
       const place = {
         uniqId: `${uniqId}/${el.name}`,
         name: el.name,
         numroutes,
-        regionId,
-        sectors: [],
+        link: el.web_guide_link,
+        regionId: id,
       }
       if (existingIndex === -1) {
         acc.push(place);
@@ -35,4 +42,56 @@ export const preparePlaces = (data: { result?: any[]; }, regionId: string, uniqI
 
       return acc;
     }, [] as Place[])
+  : [];
+};
+
+export const prepareSectors = (data: { result?: any[]; }, id: string, uniqId: string ) => Array.isArray(data?.result)
+  ? data.result.reduce((acc, el) => {
+
+      const numroutes = extractNumRoutes(el.numroutes);
+
+      // Проверяем, есть ли уже элемент с таким именем
+      const existingIndex = acc.findIndex((item: Sector) => item.name === el.name);
+      const sector = {
+        uniqId: `${uniqId}/${el.name}`,
+        name: el.name,
+        numroutes,
+        link: el.web_guide_link,
+        placeId: id,
+      }
+      if (existingIndex === -1) {
+        acc.push(sector);
+      } else {
+        // Если есть — сравниваем количество маршрутов
+        const existingNumRoutes = extractNumRoutes(acc[existingIndex].numroutes);
+        if (numroutes > existingNumRoutes) {
+          // Заменяем, если текущий больше
+          acc[existingIndex] = sector;
+        }
+      }
+
+      return acc;
+    }, [] as Sector[])
+  : [];
+
+  export const prepareRoutes = (data: { images?: any }, id: string, uniqId: string ) => Array.isArray(data?.images)
+  ? data.images.reduce((acc, image) => {
+      image?.Routes?.forEach((r: any) => {
+        // Проверяем, есть ли уже элемент с таким именем
+        const existingIndex = acc.findIndex((item: Route) => item.name === r.name && item.sectorId === id);
+        const route = {
+          uniqId: `${uniqId}/${r.name}`,
+          name: r.name,
+          link: r.web_guide_link,
+          sectorId: id,
+        }
+        if (existingIndex === -1) {
+          acc.push(route);
+        } else {
+          // Заменяем, если текущий больше
+          acc[existingIndex] = route;
+        }
+      });
+      return acc;
+    }, [] as Route[])
   : [];

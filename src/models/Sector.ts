@@ -15,7 +15,7 @@ export class Sector {
   @Column({ nullable: true })
   numroutes!: number;
 
-  @Column()
+  @Column({ nullable: true })
   link!: string;
 
   @Column()
