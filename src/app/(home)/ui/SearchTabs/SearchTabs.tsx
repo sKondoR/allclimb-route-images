@@ -7,11 +7,16 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFolderTree, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { SEARCH_TABS } from '@/shared/constants/allclimb';
 
+// ... imports
+
 export default function SearchTabs() {
   const pathname = usePathname();
   const router = useRouter();
   const searchParams = useSearchParams();
   const tab = searchParams.get('search');
+
+  // Determine index based on tab value
+  const selectedIndex = tab === SEARCH_TABS[1] ? 1 : 0;
 
   const handleTabClick = (value: string) => {
     const newParams = new URLSearchParams(searchParams.toString());
@@ -19,45 +24,35 @@ export default function SearchTabs() {
     router.push(`${pathname}?${newParams.toString()}`);
   };
 
-  // Optional: Sync external changes to tab
+  // Sync default tab if no search param
   useEffect(() => {
-    if (!searchParams.get('search')) {
+    if (!tab) {
       const newParams = new URLSearchParams(searchParams.toString());
       newParams.set('search', SEARCH_TABS[0]);
       router.replace(`${pathname}?${newParams.toString()}`);
     }
-  }, [searchParams, pathname, router]);
+  }, [tab, pathname, router]);
 
-  const isQuerySearch = tab === SEARCH_TABS[0];
+  const tabClasses = "px-3 py-1 md:py-3 md:px-5 cursor-pointer select-none text-center focus-visible:outline-none";
+
   return (
-    <div className="border-b border-black/40 text-xl">
-      <TabGroup>
+    <div className="text-xl pr-3 md:pr-6">
+      <TabGroup selectedIndex={selectedIndex} onChange={(index) => handleTabClick(SEARCH_TABS[index])}>
         <TabList className="flex">
+          <div className="grow"></div>
           <Tab
-            onClick={() => handleTabClick(SEARCH_TABS[0])}
             key="по названию"
-            className={`
-              inline-block py-3 px-5 cursor-pointer select-none text-center border-b hover:border-orange-700 hover:text-orange-700 focus-visible:outline-none
-              ${isQuerySearch
-                ? ' text-blue-700 border-blue-700'
-                : ' text-gray-800 border-transparent'
-              }
-              `
-            }
+            className={`${tabClasses}
+              ${selectedIndex === 0 ? 'bg-white/60 backdrop-blur-md text-pink-700' : 'bg-transparent text-white hover:bg-white/30'}
+            `}
           >
             <FontAwesomeIcon icon={faMagnifyingGlass} /> по названию
           </Tab>
           <Tab
-            onClick={() => handleTabClick(SEARCH_TABS[1])}
             key="по региону"
-            className={`
-              inline-block py-3 px-5 cursor-pointer select-none text-center border-b hover:border-orange-700 hover:text-orange-700 focus-visible:outline-none
-              ${!isQuerySearch 
-                ? ' text-blue-700 border-blue-700'
-                : ' text-gray-800 border-transparent'
-              }
-              `
-            }
+            className={`${tabClasses}
+              ${selectedIndex !== 0 ? 'bg-white/60 backdrop-blur-md text-pink-700' : 'bg-transparent text-white hover:bg-white/30'}
+            `}
           >
             <FontAwesomeIcon icon={faFolderTree} /> по региону
           </Tab>

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import AnimatedTitleTop from "./ui/AnimatedTitle/AnimatedTitleTop";
+import AnimatedTitle from "./ui/AnimatedTitle/AnimatedTitle";
+import { SearchTabs } from "./ui/SearchTabs";
 
 export const metadata: Metadata = {
   title: "Поиск по имени трассы на Allclimb",
@@ -12,10 +13,11 @@ export default function HomeLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="m-auto sm:w-full md:w-1/2 relative">
-      <AnimatedTitleTop />
-      <div className="bg-white/60 backdrop-blur-lg rounded-sm shadow-2xl transition-all duration-300 hover:shadow-3xl relative z-2">
-        <div className="border-white/30 rounded-sm py-4 px-6 hover:border-white/50 transition-colors overflow-hidden ">
+    <div className="m-auto sm:w-full md:w-3/4 relative">
+      <AnimatedTitle />
+      <SearchTabs />
+      <div className="bg-white/60 backdrop-blur-md rounded-sm shadow-2xl transition-all duration-300 hover:shadow-3xl relative z-2">
+        <div className="border-white/30 rounded-sm py-4 px-3 md:px-6 md:pt-16 hover:border-white/50 transition-colors overflow-hidden">
           {children}
         </div>
       </div>
