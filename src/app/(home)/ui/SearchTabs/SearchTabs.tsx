@@ -2,10 +2,7 @@
 
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
-import {
-  TETabs,
-  TETabsItem,
-} from 'tw-elements-react';
+import { TabGroup, Tab, TabList } from '@headlessui/react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFolderTree, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { SEARCH_TABS } from '@/shared/constants/allclimb';
@@ -14,7 +11,7 @@ export default function SearchTabs() {
   const pathname = usePathname();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const tab = searchParams.get('tab') || SEARCH_TABS[0];
+  const tab = searchParams.get('search');
 
   const handleTabClick = (value: string) => {
     const newParams = new URLSearchParams(searchParams.toString());
@@ -31,24 +28,41 @@ export default function SearchTabs() {
     }
   }, [searchParams, pathname, router]);
 
+  const isQuerySearch = tab === SEARCH_TABS[0];
   return (
     <div className="border-b border-black/40 text-xl">
-      <TETabs className="mb-0">
-        <TETabsItem
-          onClick={() => handleTabClick(SEARCH_TABS[0])}
-          active={tab === SEARCH_TABS[0]}
-          className="inline-block py-3 px-5 cursor-pointer select-none text-center border-b border-transparent text-gray-800 hover:border-blue-700 hover:text-blue-700"
-        >
-          <FontAwesomeIcon icon={faMagnifyingGlass} /> по названию
-        </TETabsItem>
-        <TETabsItem
-          onClick={() => handleTabClick(SEARCH_TABS[1])}
-          active={tab === SEARCH_TABS[1]}
-          className="inline-block py-3 px-5 cursor-pointer select-none text-center border-b border-transparent text-gray-800 hover:border-blue-700 hover:text-blue-700"
-        >
-          <FontAwesomeIcon icon={faFolderTree} /> по региону
-        </TETabsItem>
-      </TETabs>
+      <TabGroup>
+        <TabList className="flex">
+          <Tab
+            onClick={() => handleTabClick(SEARCH_TABS[0])}
+            key="по названию"
+            className={`
+              inline-block py-3 px-5 cursor-pointer select-none text-center border-b hover:border-orange-700 hover:text-orange-700 focus-visible:outline-none
+              ${isQuerySearch
+                ? ' text-blue-700 border-blue-700'
+                : ' text-gray-800 border-transparent'
+              }
+              `
+            }
+          >
+            <FontAwesomeIcon icon={faMagnifyingGlass} /> по названию
+          </Tab>
+          <Tab
+            onClick={() => handleTabClick(SEARCH_TABS[1])}
+            key="по региону"
+            className={`
+              inline-block py-3 px-5 cursor-pointer select-none text-center border-b hover:border-orange-700 hover:text-orange-700 focus-visible:outline-none
+              ${!isQuerySearch 
+                ? ' text-blue-700 border-blue-700'
+                : ' text-gray-800 border-transparent'
+              }
+              `
+            }
+          >
+            <FontAwesomeIcon icon={faFolderTree} /> по региону
+          </Tab>
+        </TabList>
+      </TabGroup>
     </div>
   );
 }

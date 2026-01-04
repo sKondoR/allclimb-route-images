@@ -1,9 +1,11 @@
+
 import { SearchTabs } from './ui/SearchTabs';
 import { SearchForm } from './ui/SearchForm';
 import { SEARCH_TABS } from '@/shared/constants/allclimb';
 import { RoutesTree } from './ui/RoutesTree';
 import { fetchRegions } from '../actions/fetchRegions';
 import type { IRegion } from '@/shared/types/IRegion';
+import AnimatedTitle from './ui/AnimatedTitle/AnimatedTitle';
 
 export default async function Home(
   { searchParams }: { searchParams: { search?: string } }
@@ -13,9 +15,7 @@ export default async function Home(
   const isFirstTab = !search || search === SEARCH_TABS[0];
   return (
     <>
-      <h1 className="mb-6 text-center text-2xl font-bold text-gray-800">
-        Поиск по имени трассы на Allclimb
-      </h1>
+      <AnimatedTitle />
       <SearchTabs />
       <div className="mt-3">
         {isFirstTab ?  <SearchForm /> : <RoutesTree regions={regions} />}

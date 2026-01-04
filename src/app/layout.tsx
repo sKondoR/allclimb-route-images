@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
+import AnimatedBg from './ui/AnimatedBg/AnimatedBg';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,27 +27,18 @@ export default function RootLayout({
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased overflow-x-hidden
-          min-h-screen bg-animated-gradient flex flex-col items-center justify-center
+          flex flex-col items-center
         `}
-      >    
-          <div
-            className="absolute inset-0 min-h-full bg-cover bg-center -z-2 opacity-30"
-            style={{ backgroundImage: "url('/images/bg5.jpg')" }}
-          ></div>
-          <div className="absolute inset-0 overflow-hidden">
-              <div className="absolute top-10 left-20 w-32 h-32 rounded-full bg-white/10 ipulse" style={{ animationDelay: '0s' }}></div>
-              <div className="absolute top-2/3 right-1/4 w-24 h-24 rounded-full bg-white/10 ipulse" style={{ animationDelay: '3s' }}></div>
-              <div className="absolute bottom-20 left-1/4 w-20 h-20 rounded-full bg-white/10 ipulse" style={{ animationDelay: '5s' }}></div>
-              <div className="absolute top-1/4 right-20 w-12 h-12 rounded-full bg-white/10 ipulse" style={{ animationDelay: '8s' }}></div>
-          </div>
-          <div className="w-full min-w-screen grow sm:p-5 md:p-10 lg:p-20 relative z-10">
-            {children}
-          </div>
-          <div className="text-center p-5">
-            <p className="text-white/50 text-sm">Don't have an account?
-              <a href="#" className="text-white hover:underline">Sign up</a>
-            </p>
-          </div>
+      >
+        <AnimatedBg />
+        <div className="w-full mins-w-screen grow sm:p-10 md:p-25 lg:p-25 relative z-10">
+          {children}
+        </div>
+        <div className="text-center p-5">
+          <p className="text-white/50 text-sm">Don't have an account?
+            <a href="#" className="text-white hover:underline">Sign up</a>
+          </p>
+        </div>
       </body>
     </html>
   );

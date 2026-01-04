@@ -55,14 +55,6 @@ body {
     animation: ipulse 10s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
-.image-upload-container {
-    transition: all 0.3s ease;
-}
-
-.image-upload-container:hover {
-    transform: scale(1.01);
-}
-
 .image-preview {
     transition: all 0.3s ease;
     filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.3));
