@@ -27,18 +27,5 @@ export default function AnimatedBg() {
           animationDelay: `-${delay}s`,
       }}
     ></div>
-    <div
-      className="fixed h-screen inset-0 -z-2 bg-cover bg-center bg-fixed opacity-30"
-      style={{
-        backgroundImage: "url('/images/bg5.jpg')",
-        
-      }}
-    ></div>
-    <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-10 left-20 w-32 h-32 rounded-full bg-white/10 ipulse" style={{ animationDelay: '0s' }}></div>
-        <div className="absolute top-2/3 right-1/4 w-24 h-24 rounded-full bg-white/10 ipulse" style={{ animationDelay: '3s' }}></div>
-        <div className="absolute bottom-20 left-1/4 w-20 h-20 rounded-full bg-white/10 ipulse" style={{ animationDelay: '5s' }}></div>
-        <div className="absolute top-1/4 right-20 w-12 h-12 rounded-full bg-white/10 ipulse" style={{ animationDelay: '8s' }}></div>
-    </div>
   </ClientOnly>);
 }
