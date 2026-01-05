@@ -1,6 +1,10 @@
 import AnimatedTitleColored from "./AnimatedTitleColored";
 
-export default function AnimatedTitle() {
+export default function AnimatedTitle({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
   return (
       <h1
         className={`
@@ -15,8 +19,10 @@ export default function AnimatedTitle() {
           md:left-[-89px] md:top-[-24px]
         `}
       >
-        <AnimatedTitleColored />
-        Поиск<br />Allclimb<br />трасс
+        <AnimatedTitleColored>
+          {children}
+        </AnimatedTitleColored>
+        {children}
       </h1>
   );
 }

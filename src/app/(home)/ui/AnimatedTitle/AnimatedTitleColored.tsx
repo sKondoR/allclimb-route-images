@@ -3,7 +3,11 @@
 import useGlobalTime from '@/shared/hooks/useGlobalTime';
 import ClientOnly from '@/shared/ui/ClientOnly';
 
-export default function AnimatedTitleColored() {
+export default function AnimatedTitleColored({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
   const globalTime = useGlobalTime();
   const animationDuration = 15000;
   const delay = (globalTime % animationDuration) / 1000;
@@ -22,7 +26,7 @@ export default function AnimatedTitleColored() {
       <h1
           className={`
             block
-              font-mono font-bold leading-[0.8]
+              font-mono font-bold leading-[0.8] 
               bg-clip-text text-transparent              
               font-bold bg-clip-text text-transparent
               bg-cover bg-center bg-animated-gradient
@@ -40,7 +44,7 @@ export default function AnimatedTitleColored() {
           }}
           suppressHydrationWarning
       >
-          Поиск<br />Allclimb<br />трасс
+          {children}
       </h1>
     </ClientOnly>
   );

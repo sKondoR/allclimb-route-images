@@ -1,7 +1,8 @@
 import { getDatabase } from '@/lib/database';
 import { Place, Route, Sector } from '@/models';
+import type { FoundResults } from '../(home)/ui/SearchResults/SearchResults.types';
 
-export async function searchByName(query: string) {
+export async function searchByName(query: string): Promise<FoundResults | []> {
   if (!query || query.trim() === '') {
     return [];
   }
@@ -17,12 +18,12 @@ export async function searchByName(query: string) {
   try {
     const [places, sectors, routes] = await Promise.all([
       placeRepo.createQueryBuilder('place')
-        .select(['place.id', 'place.name', 'place.link'])
+        .select(['place.id', 'place.name', 'place.uniqId', 'place.link'])
         .where('LOWER(place.name) LIKE LOWER(:searchTerm)', { searchTerm })
         .getMany(),
 
       sectorRepo.createQueryBuilder('sector')
-        .select(['sector.id', 'sector.name', 'sector.link'])
+        .select(['sector.id', 'sector.name', 'sector.uniqId', 'sector.link'])
         .where('LOWER(sector.name) LIKE LOWER(:searchTerm)', { searchTerm })
         .getMany(),
 
@@ -34,8 +35,8 @@ export async function searchByName(query: string) {
     ]);
 
     return {
-      places: places.map(({ id, name, link }: { id: string; name: string; link: string }) => ({ id, name, link })),
-      sectors: sectors.map(({ id, name, link }: { id: string; name: string; link: string }) => ({ id, name, link })),
+      places: places.map(({ id, name, uniqId, link }) => ({ id, name, uniqId, link })),
+      sectors: sectors.map(({ id, name, uniqId, link }) => ({ id, name, uniqId, link })),
       routes: routes.map(({ id, name, uniqId, sector }) => ({
         id,
         name,

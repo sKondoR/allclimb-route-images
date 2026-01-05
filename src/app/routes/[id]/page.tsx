@@ -1,9 +1,14 @@
-'use client';
+import { PageDescription } from '@/app/ui/PageDescription';
+import RouteInfo from '../ui/RouteInfo/RouteInfo';
 
-import { useParams } from 'next/navigation';
-
-export default function RoutePage() {
-  const { id } = useParams();
-
-  return <div>Route page: {id}</div>;
+export default async function RoutePage() {
+  return (
+  <>
+    <div className="mt-3">
+      <PageDescription>
+        <div className="w-full text-right"></div>
+      </PageDescription>
+    </div>
+    <RouteInfo />
+  </>);
 }
