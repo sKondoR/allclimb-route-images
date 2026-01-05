@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 import { DataSource } from 'typeorm';
 import type { ObjectLiteral } from 'typeorm';
-import { Region, Place, Route, Sector } from '@/models';
+import { Place, Region, Route, Sector, Settings } from '@/models';
 
 let AppDataSource: DataSource;
 
@@ -19,7 +19,7 @@ export async function getDataSource(): Promise<DataSource> {
         database: process.env.POSTGRES_DB_NAME,
         username: process.env.POSTGRES_USER,
         password: process.env.POSTGRES_PASSWORD,
-        entities: [Region, Place, Sector, Route],
+        entities: [Region, Place, Sector, Route, Settings],
         synchronize: process.env.NODE_ENV === 'development',
         logging: process.env.NODE_ENV === 'development',
         // useNewUrlParser: true,

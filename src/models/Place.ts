@@ -15,8 +15,8 @@ export class Place {
   @Column()
   numroutes!: number;
 
-  @Column({ nullable: true })
-  link?: string;
+  @Column()
+  link!: string;
 
   @Column()
   @Index()

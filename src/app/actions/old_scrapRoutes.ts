@@ -1,5 +1,3 @@
-'use server';
-
 import { ALLCLIMB_URL } from '@/shared/constants/allclimb';
 import { chromium as plChromium } from 'playwright';
 import chromium from '@sparticuz/chromium';

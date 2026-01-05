@@ -1,10 +1,11 @@
 'use server';
-
 import { ALLCLIMB_URL } from '@/shared/constants/allclimb';
 import { getDatabase } from '@/lib/database';
 import { Place, Region, Route, Sector } from '@/models';
 import { preparePlaces, prepareRoutes, prepareSectors } from './scrapRoutes-utils';
 import chunkArray from '@/shared/utils/chunkArray';
+import { formatDuration } from '@/shared/utils/formatDuration';
+import { updateScrapStats } from './updateScrapStats';
 
 interface FetchErrors {
   regions: string[];
@@ -14,6 +15,8 @@ interface FetchErrors {
 
 export async function scrapRoutes() {
   try {
+    const startTime = new Date();
+
     const getApiResponse = async (url: string) => {
       const response = await fetch(url, {
         method: 'POST',
@@ -40,10 +43,10 @@ export async function scrapRoutes() {
         status: response.status,
         data
       };
-  };
+    };
 
     const { data: { result } } = await getApiResponse(`${ALLCLIMB_URL}/ru/guides/`);
-    let regionsResults = result ? result.map((el: any) => ({
+    let loadedRegions = result ? result.map((el: any) => ({
       ...el,
       uniqId: `${el.country}/${el.name}`,
       link: el.web_guide_link,
@@ -67,11 +70,11 @@ export async function scrapRoutes() {
     };
     
     // Сохраняем загруженные регионы
-    regionsResults = await regionRepo.save(regionsResults);
-    console.log('регионов: ', regionsResults.length);
+    loadedRegions = await regionRepo.save(loadedRegions);
+    console.log('регионов: ', loadedRegions.length);
 
     let loadedPlaces: Place[] = [];
-    const placesDataPromises = regionsResults.map(async (region: Region, i: number) => {
+    const placesDataPromises = loadedRegions.map(async (region: Region, i: number) => {
       try {
         const { data } = await getApiResponse(`${ALLCLIMB_URL}${region.link}`);
         const regionPlaces = preparePlaces(data, region.id, region.uniqId);    
@@ -127,7 +130,7 @@ export async function scrapRoutes() {
     console.log('секторов: ', loadedSectors.length);
 
     const sectorsChunks = chunkArray(loadedSectors, BATCH_SIZE);
-    const routesResult: Route[] = [];
+    const loadedRoutes: Route[] = [];
     for (const sectorsChunk of sectorsChunks) {
       await Promise.all(
         sectorsChunk.map(async (sector: Sector) => {
@@ -136,7 +139,7 @@ export async function scrapRoutes() {
           try {
             const { data } = await getApiResponse(`${ALLCLIMB_URL}${sector.link}`);
             const sectorRoutes = prepareRoutes(data, sector.id, sector.uniqId);
-            routesResult.push(...sectorRoutes);
+            loadedRoutes.push(...sectorRoutes);
             // if (sectorRoutes.length === 0) {
             //   console.log('нет трасс для сектора: ', sector.link);
             // }        
@@ -154,13 +157,25 @@ export async function scrapRoutes() {
       await new Promise((resolve) => setTimeout(resolve, 300));
     }
 
-    console.log('трасс: ', routesResult.length);
-
+    const endTime = new Date();
+    const stats = {
+      regions: loadedRegions.length,
+      regionsErrors: fetchErrors.regions.length,
+      places: loadedPlaces.length,
+      placesErrors: fetchErrors.places.length,
+      sectors: loadedSectors.length,
+      sectorsErrors: fetchErrors.sectors.length,
+      routes: loadedRoutes.length,
+      scrapDate: endTime.toLocaleDateString('ru-RU'),
+      scrapDuration: formatDuration(startTime, endTime)
+    }
     console.log(`
-      ошибки загрузки данных для регионов: ${fetchErrors.regions.length} / ${regionsResults.length}
-      ошибки загрузки данных для мест: ${fetchErrors.places.length} / ${loadedPlaces.length}
-      ошибки загрузки данных для секторов: ${fetchErrors.sectors.length} / ${loadedSectors.length}
+      ошибки загрузки данных для регионов: ${stats.regionsErrors} / ${stats.regions}
+      ошибки загрузки данных для мест: ${stats.placesErrors} / ${stats.places}
+      ошибки загрузки данных для секторов: ${stats.sectorsErrors} / ${stats.sectors}
+      трасс загруженно: ${loadedRoutes.length}
     `)
+    updateScrapStats(stats);
   } catch (error) {
     console.error('Ошибка на загрузке данных с Allclimb: ', error);
     throw new Error('Ошибка на загрузке данных с Allclimb');
