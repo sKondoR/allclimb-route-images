@@ -13,7 +13,12 @@ export async function updateScrapStats(stats: IScrapStats) {
   if (!settings) {
     settings = new Settings();
   }
-  settings.scrapStats = stats; // Replace with actual data
+  const maxRoutes = stats.routes > settings.scrapStats.routes ? stats.routes : settings.scrapStats.routes;
+  settings.scrapStats = { 
+    ...stats,
+    routes: maxRoutes,
+    routesErrors: maxRoutes - stats.routes,
+  };
   await settingsRepo.save(settings);
 }
 

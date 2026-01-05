@@ -11,6 +11,7 @@ export default async function ScrapStats() {
       sectors,
       sectorsErrors,
       routes,
+      routesErrors,
       scrapDate,
   } = settings[settings.length - 1].scrapStats;
   return (
@@ -32,7 +33,7 @@ export default async function ScrapStats() {
         <div>{sectorsErrors}</div>
         <div>трасс</div>
         <div>{routes}</div>
-        <div></div>
+        <div>{routesErrors}</div>
       </div>
     </div>
   );

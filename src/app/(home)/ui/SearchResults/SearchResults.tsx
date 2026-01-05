@@ -34,7 +34,7 @@ export default function SearchResults({ results }: { results: FoundResults }) {
       </div>
       <div className="w-1/2">
         {results.places.length > 0 && (
-          <div className="">
+          <div className="mb-5">
             <h3 className="text-lg text-pink-700 uppercase tracking-wider border-b-2 border-pink-700 mb-3">
               Места в регионах
             </h3>
@@ -55,7 +55,7 @@ export default function SearchResults({ results }: { results: FoundResults }) {
         )}
 
         {results.sectors.length > 0 && (
-          <div className="mt-5">
+          <div>
             <h3 className="text-lg text-pink-700 uppercase tracking-wider border-b-2 border-pink-700 mb-3">
               Сектора
             </h3>

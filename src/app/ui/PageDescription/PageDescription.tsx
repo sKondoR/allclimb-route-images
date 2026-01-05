@@ -6,7 +6,7 @@ export default function PageDescription({
   children: React.ReactNode;
 }>): JSX.Element {
     return (
-        <div className="ml-30 flex mb-3 min-h-10">
+        <div className="ml-50 flex mb-3 min-h-10">
             {children}
         </div>
     )

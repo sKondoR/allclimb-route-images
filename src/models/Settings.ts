@@ -14,6 +14,7 @@ export class Settings {
       sectors: number,
       sectorsErrors: number,
       routes: number,
+      routesErrors?: number,
       scrapDate: string,
       scrapDuration?: string
   };

@@ -8,17 +8,11 @@ export async function fetchRegions(): Promise<IRegion[]> {
   const regionRepo = getRepository(Region);
   
   const regions = await regionRepo.find({
-    // relations: {
-    //   children: {
-    //     children: true, 
-    //   },
-    // },
     order: {
       country: 'ASC',
       name: 'ASC',
     },
   });
-  console.log('fetchRegions: ', regions[0]);
   return regions;
 }
 

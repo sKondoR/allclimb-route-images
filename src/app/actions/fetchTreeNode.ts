@@ -8,10 +8,22 @@ import type { IPlace } from '@/shared/types/IPlace';
 import type { ISector } from '@/shared/types/ISector';
 import type { IRoute } from '@/shared/types/IRoute';
 
+const fetchTreeData = async (level: number, parentId: string) => {
+  switch (level) {
+    case 0:
+      return await fetchPlaces({ regionId: parentId });
+    case 1:
+      return await fetchSectors({ placeId: parentId });
+    case 2:
+      return await fetchRoutes({ sectorId: parentId });
+    default:
+      throw new Error(`Unsupported level: ${level}`);
+  }
+};
+
+
 export async function fetchTreeNode(level: number, parentId?: string): Promise<IPlace[] | ISector[] | IRoute[]> {
-  console.log('fetchTreeNode', level);
-  const fetchAction = level ===  0 ? fetchPlaces : (level ===  1 ? fetchSectors : fetchRoutes);
-  const data = await fetchAction(parentId);
+  const data = await fetchTreeData(level, parentId || '');
   const preparedData = data.map((el) => ({
     id: el.id,
     name: el.name,

@@ -4,7 +4,7 @@ import chromium from '@sparticuz/chromium';
 import { getDatabase } from '@/lib/database';
 import { Region } from '@/models';
 
-export async function scrapRoutes() {
+export async function scrapRouteImage() {
   let browser;
   let context;
   try {

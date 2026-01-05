@@ -1,4 +1,5 @@
 import type { Place, Route, Sector } from '@/models';
+import { removeTags } from '@/shared/utils/removeTags';
 
 const extractNumRoutes = (str: string | number): number => {
     if (typeof str === 'number') {
@@ -84,6 +85,12 @@ export const prepareSectors = (data: { result?: any[]; }, id: string, uniqId: st
           name: r.name,
           link: r.web_guide_link,
           sectorId: id,
+          grade: removeTags(r.grade),
+          author: r.author,
+          bolts: r.bolts,
+          type: removeTags(r.type),
+          length: removeTags(r.bolts),
+          top: removeTags(r.type),
         }
         if (existingIndex === -1) {
           acc.push(route);

@@ -6,6 +6,7 @@ export interface IScrapStats {
     sectors: number;
     sectorsErrors: number;
     routes: number;
+    routesErrors?: number;
     scrapDate: string;
     scrapDuration?: string;
 }
