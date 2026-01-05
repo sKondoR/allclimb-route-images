@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import { AnimatedBg } from './ui/AnimatedBg';
+import { ScrapStats } from '@/shared/ui/ScrapStats';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -48,11 +49,7 @@ export default function RootLayout({
         <div className="w-full mins-w-screen grow p-3 pl-10 md:p-15 relative z-10">
           {children}
         </div>
-        <div className="text-center p-5">
-          <p className="text-white/50 text-sm">Don't have an account?
-            <a href="#" className="text-white hover:underline">Sign up</a>
-          </p>
-        </div>
+        <ScrapStats />
       </body>
     </html>
   );

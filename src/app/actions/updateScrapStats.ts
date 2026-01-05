@@ -2,7 +2,7 @@
 
 import { getDatabase } from '@/lib/database';
 import { Settings } from '@/models/Settings';
-import type { IScrapStats } from '@/shared/types/ISettings';
+import type { IScrapStats } from '@/shared/types/IScrapStats';
 
 export async function updateScrapStats(stats: IScrapStats) {
   const { getRepository } = await getDatabase();

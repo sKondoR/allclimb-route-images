@@ -22,6 +22,7 @@ export default function AnimatedTitleColored({
         md:left-[89px] md:top-[77px]
         md:width-[calc(100% - 89px)] md:height-[calc(100% - 77px)]
       "
+      style={{ height: '77px' }}
     >
       <h1
           className={`
@@ -40,7 +41,8 @@ export default function AnimatedTitleColored({
           style={{
             animationDelay: `-${delay}s`,
             backgroundClip: 'text',
-            WebkitBackgroundClip: 'text'
+            WebkitBackgroundClip: 'text',
+            paddingBottom: '7px',
           }}
           suppressHydrationWarning
       >

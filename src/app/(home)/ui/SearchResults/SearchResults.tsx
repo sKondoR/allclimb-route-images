@@ -1,5 +1,7 @@
 import { getBeforeLastSlash } from '@/shared/utils/getBeforeLastSlash';
 import type { FoundResults } from './SearchResults.types';
+import { AllclimbLink } from '@/shared/ui/AllclimbLink';
+import { ALLCLIMB_URL } from '@/shared/constants/allclimb';
 
 export default function SearchResults({ results }: { results: FoundResults }) {
   const hasResults =
@@ -17,7 +19,12 @@ export default function SearchResults({ results }: { results: FoundResults }) {
             <ul className="space-y-2">
               {results.routes.map((route) => (
                 <li key={`route-${route.id}`}>
-                    <a href={`/routes/${route.id}`} className="cursor-pointer text-cyan-700 hover:text-pink-700">{route.name}</a>
+                    <div className="flex">
+                      <div className="grow">
+                        <a href={`/routes/${route.id}`} className="cursor-pointer text-cyan-700 hover:text-pink-700">{route.name}</a>
+                      </div>
+                      <AllclimbLink href={`${ALLCLIMB_URL}/${route.sectorLink}`}/>
+                    </div>
                     <div className="text-xs text-gray-500">{getBeforeLastSlash(route.uniqId)}</div>
                 </li>
               ))}
@@ -34,7 +41,12 @@ export default function SearchResults({ results }: { results: FoundResults }) {
             <ul className="space-y-1">
               {results.places.map((place) => (
                 <li key={`place-${place.id}`}>
-                    {place.name}
+                    <div className="flex">
+                      <div className="grow">
+                        {place.name}
+                      </div>
+                      <AllclimbLink href={`${ALLCLIMB_URL}/${place.link}`}/>
+                    </div>
                     <div className="text-xs text-gray-500">{getBeforeLastSlash(place.uniqId)}</div>
                 </li>
               ))}
@@ -50,7 +62,12 @@ export default function SearchResults({ results }: { results: FoundResults }) {
             <ul className="space-y-1">
               {results.sectors.map((sector) => (
                 <li key={`sector-${sector.id}`}>
-                    {sector.name}
+                    <div className="flex">
+                      <div className="grow">
+                        {sector.name}
+                      </div>
+                      <AllclimbLink href={`${ALLCLIMB_URL}/${sector.link}`}/>
+                    </div>
                     <div className="text-xs text-gray-500">{getBeforeLastSlash(sector.uniqId)}</div>
                 </li>
               ))}
