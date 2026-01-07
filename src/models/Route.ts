@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, Index } from 'typeorm';
-import { Sector } from '@/models';
+import { Sector } from '@/models/Sector';
 
 @Entity()
 export class Route {

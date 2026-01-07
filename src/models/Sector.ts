@@ -1,5 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany, Index } from 'typeorm';
-import { Place, Route } from '@/models';
+import { Place } from '@/models/Place';
+import { Route } from '@/models/Route';
 
 @Entity()
 export class Sector {
