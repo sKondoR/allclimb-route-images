@@ -1,8 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany, Index } from 'typeorm';
-import { Place } from '@/models/Place';
-import { Route } from '@/models/Route';
 
-@Entity()
+@Entity('sectors')
 export class Sector {
   @PrimaryGeneratedColumn()
   id!: string;
@@ -23,11 +21,8 @@ export class Sector {
   @Index()
   placeId!: string;
 
-  @ManyToOne('Place', 'children')
-  place!: Place;
-
-  @OneToMany('Route', 'sector')
-  children!: Route[];
+  @ManyToOne('Place', (place: any) => place.children)
+  place!: any;
 }
 
 // name: "Минусинский"

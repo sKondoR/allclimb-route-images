@@ -1,12 +1,12 @@
 import 'reflect-metadata';
+import { Place } from '../models/Place';
+import { Region } from '../models/Region';
+import { Route } from '../models/Route';
+import { Sector } from '../models/Sector';
+import { Settings } from '../models/Settings';
+import { Image } from '../models/Image';
 import { DataSource } from 'typeorm';
 import type { ObjectLiteral } from 'typeorm';
-import { Region  } from '@/models/Region';
-import { Place } from '@/models/Place';
-import { Sector } from '@/models/Sector';
-import { Route } from '@/models/Route';
-import { Image } from '@/models/Image';
-import { Settings } from '@/models/Settings';
 
 let AppDataSource: DataSource;
 
@@ -25,21 +25,25 @@ export async function getDataSource(): Promise<DataSource> {
         username: process.env.POSTGRES_USER,
         password: process.env.POSTGRES_PASSWORD,
         entities: [
+          Settings,
           Region,
           Place,
           Sector,
           Route,
           Image,
-          Settings,
         ],
         synchronize: process.env.NODE_ENV === 'development',
         logging: process.env.NODE_ENV === 'development',
+        logger: 'simple-console'
         // useNewUrlParser: true,
         // useUnifiedTopology: true,
         // ssl: process.env.NODE_ENV === 'production',
     });
 
-    await AppDataSource.initialize();
+    await AppDataSource.initialize().catch((err) => {
+      console.error('Data source initialization failed', err)
+      process.exit(1)
+    });
     console.log('Database connected successfully');
     return AppDataSource;
   } catch (error) {

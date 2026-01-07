@@ -1,7 +1,11 @@
 {
   "compilerOptions": {
-    "target": "ES2017",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "target": "ES2022",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -16,23 +20,38 @@
     "plugins": [
       {
         "name": "next"
-      },
+      }
     ],
     "paths": {
-      "@/*": ["./*"],
-      "@/actions/*": ["actions/*"],
-      "@/api/*": ["api/*"],
-      "@/components/*": ["components/*"],
-      "@/lib/*": ["lib/*"],
-      "@/models/*": ["models/*"],
-      "@/scraping/*": ["scraping/*"],
-      "@/shared/*": ["shared/*"]
+      "@/*": [
+        "src/*"
+      ],
+      "@/actions/*": [
+        "src/actions/*"
+      ],
+      "@/api/*": [
+        "src/api/*"
+      ],
+      "@/components/*": [
+        "src/components/*"
+      ],
+      "@/lib/*": [
+        "src/lib/*"
+      ],
+      "@/models/*": [
+        "src/models/*"
+      ],
+      "@/scraping/*": [
+        "src/scraping/*"
+      ],
+      "@/shared/*": [
+        "src/shared/*"
+      ]
     },
-    "baseUrl": "./src",
-    
+    "baseUrl": ".",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "verbatimModuleSyntax": true,
+    "verbatimModuleSyntax": true
   },
   "include": [
     "next-env.d.ts",
@@ -40,7 +59,11 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
-    "**/*.mts"
+    "**/*.mts",
+    "dist/types/**/*.ts",
+    "dist/dev/types/**/*.ts"
   ],
-  "exclude": ["node_modules"],
+  "exclude": [
+    "node_modules"
+  ]
 }

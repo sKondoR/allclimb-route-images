@@ -1,7 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, Index } from 'typeorm';
-import { Route } from '@/models/Route';
+import { Entity, PrimaryGeneratedColumn, Column, Index, ManyToOne } from 'typeorm';
 
-@Entity()
+@Entity('images')
 export class Image {
   @PrimaryGeneratedColumn()
   id!: string;
@@ -19,6 +18,6 @@ export class Image {
   @Index()
   routeId!: string;
 
-  @ManyToOne('Route', 'children')
-  route!: Route;
+  @ManyToOne('Route', (route: any) => route.children)
+  route!: any;
 }

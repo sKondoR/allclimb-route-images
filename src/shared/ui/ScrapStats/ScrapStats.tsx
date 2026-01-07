@@ -1,40 +1,63 @@
-import { fetchSettings } from "@/app/actions/fetchSettings";
-import type { ISettings } from "@/shared/types/ISettings";
+'use client';
 
-export default async function ScrapStats() {
-  const settings: ISettings[] = await fetchSettings(); 
-  const {
-      regions,
-      regionsErrors,
-      places,
-      placesErrors,
-      sectors,
-      sectorsErrors,
-      routes,
-      routesErrors,
-      scrapDate,
-  } = settings[settings.length - 1].scrapStats;
-  return (
-    <div className="p-5 text-white/50 text-sm relative z-20">
-      <div className="grid grid-cols-3">
-        <div>{scrapDate}</div>
-        <div className="col-span-2">обновление данных с Allclimb</div>
-        <div></div>
-        <div>всего</div>
-        <div>ошибки загрузки</div>
-        <div>регионов</div>
-        <div>{regions}</div>
-        <div>{regionsErrors}</div>
-        <div>мест</div>
-        <div>{places}</div>
-        <div>{placesErrors}</div>
-        <div>секторов</div>
-        <div>{sectors}</div>
-        <div>{sectorsErrors}</div>
-        <div>трасс</div>
-        <div>{routes}</div>
-        <div>{routesErrors}</div>
+import type { ISettings } from '@/shared/types/ISettings';
+import { useEffect, useState } from 'react';
+
+export default function ScrapStats() {
+  try {
+    const [settings, setSettings] = useState<ISettings[]>([]);
+
+    useEffect(() => {
+      const load = async function () {
+        const res = await fetch('/api/settings');
+        const data = await res.json();
+        setSettings(data);
+      }
+      load();
+    }, []);
+
+    if(!settings.length) return;
+
+    const {
+        regions,
+        regionsErrors,
+        places,
+        placesErrors,
+        sectors,
+        sectorsErrors,
+        routes,
+        routesErrors,
+        scrapDate,
+    } = settings[settings.length - 1].scrapStats;
+    return (
+      <div className="p-5 text-white/50 text-sm relative z-20">
+        <div className="grid grid-cols-3">
+          <div>{scrapDate}</div>
+          <div className="col-span-2">обновление данных с Allclimb</div>
+          <div></div>
+          <div>всего</div>
+          <div>ошибки загрузки</div>
+          <div>регионов</div>
+          <div>{regions}</div>
+          <div>{regionsErrors}</div>
+          <div>мест</div>
+          <div>{places}</div>
+          <div>{placesErrors}</div>
+          <div>секторов</div>
+          <div>{sectors}</div>
+          <div>{sectorsErrors}</div>
+          <div>трасс</div>
+          <div>{routes}</div>
+          <div>{routesErrors}</div>
+        </div>
       </div>
-    </div>
-  );
+    );
+    } catch (error) {
+    console.error('Failed to load ScrapStats:', error);
+    return (
+      <div className="p-5 text-white/50 text-sm relative z-20">
+        Ошибка загрузки статистики
+      </div>
+    );
+  }
 }

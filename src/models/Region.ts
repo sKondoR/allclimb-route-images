@@ -1,7 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
-import { Place } from '@/models/Place';
 
-@Entity()
+@Entity('regions')
 export class Region {
   @PrimaryGeneratedColumn()
   id!: string;
@@ -20,9 +19,6 @@ export class Region {
 
   @Column({ nullable: true })
   link?: string;
-
-  @OneToMany('Place', 'region')
-  children!: Place[];
 }
 
     // Picture: null,

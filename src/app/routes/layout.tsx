@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   description: "Отметь Allclimb трассу",
 };
 
-export default function HomeLayout({
+export default function RoutesLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;

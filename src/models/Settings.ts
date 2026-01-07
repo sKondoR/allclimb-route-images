@@ -1,21 +1,11 @@
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import type { ISettings } from '@/shared/types/ISettings';
 
-@Entity()
+@Entity('settings')
 export class Settings {
   @PrimaryGeneratedColumn()
   id!: number;
 
   @Column('json', { nullable: true })
-  scrapStats!: {
-      regions: number,
-      regionsErrors: number,
-      places: number,
-      placesErrors: number,
-      sectors: number,
-      sectorsErrors: number,
-      routes: number,
-      routesErrors?: number,
-      scrapDate: string,
-      scrapDuration?: string
-  };
+  scrapStats!: ISettings['scrapStats'];
 }

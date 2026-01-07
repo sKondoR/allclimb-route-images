@@ -13,7 +13,6 @@ export async function GET(request: NextRequest) {
   try {
     // Use internal action instead of external fetch
     const results = await searchByName(query);
-
     return NextResponse.json(results);
   } catch (error) {
     console.error('Search error:', error);
