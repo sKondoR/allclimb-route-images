@@ -7,7 +7,7 @@ import type { IRegion } from '@/shared/types/IRegion';
 import { PageDescription } from '../ui/PageDescription';
 import { Suspense } from 'react';
 
-export default async function Home(
+async function HomeContent (
   { searchParams }: { searchParams: { search?: string } }
 ) {
   const regions: IRegion[] = await fetchRegions(); 
@@ -24,5 +24,15 @@ export default async function Home(
         </div>
       </Suspense>
     </> 
+  );
+}
+
+export default function Home(
+  { searchParams }: { searchParams: { search?: string } }
+) {
+  return (
+    <Suspense fallback={<div></div>}>
+      <HomeContent searchParams={searchParams} />
+    </Suspense>
   );
 }
