@@ -31,6 +31,7 @@ export async function getDataSource(): Promise<DataSource> {
           Sector,
           Route,
           Image,
+           __dirname + '/../models/**/*.js'
         ],
         synchronize: process.env.NODE_ENV === 'development',
         logging: process.env.NODE_ENV === 'development',

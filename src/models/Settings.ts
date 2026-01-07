@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
-import type { ISettings } from '@/shared/types/ISettings';
+import type { ISettings } from '../shared/types/ISettings';
 
 @Entity('settings')
 export class Settings {
