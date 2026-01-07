@@ -6,8 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint",
-    "debug": "next build --debug-prerender"
+    "lint": "eslint"
   },
   "dependencies": {
     "@fortawesome/free-solid-svg-icons": "^7.1.0",

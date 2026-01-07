@@ -7,7 +7,6 @@ const nextConfig: NextConfig = {
     'playwright',
     '@sparticuz/chromium',
   ],
-  distDir: 'dist',
 };
 
 export default nextConfig;
