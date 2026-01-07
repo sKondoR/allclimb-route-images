@@ -9,8 +9,10 @@ import type { IRoute } from '@/shared/types/IRoute';
 import { fetchRoute } from '@/app/actions/fetchRoute';
 import { RouteBadge } from '@/shared/ui/RouteBadge';
 import { getBeforeLastSlash } from '@/shared/utils/getBeforeLastSlash';
+import { getRegionFromRouteUniqId } from '@/shared/utils/getRegionFromRouteUniqId';
 import { scrapRouteImage } from '@/app/actions/scrapRouteImage';
 import type { IImage } from '@/shared/types/IImage';
+import EditImage from '@/shared/ui/EditImage/EditImage';
 
 type IState = 'found' | 'not-found' | 'loading';
 
@@ -81,10 +83,15 @@ export default function RoutePage() {
               className={`text-cyan-700 animate-spin`}
             /> загрузка изображения
           </> : null}
-          {route && image?.imageData ? 
-            <img
-              src={`data:image/png;base64,${image.imageData}`}
-            />
+          {route?.grade && route?.uniqId && image?.imageData ? 
+            <div>
+              <EditImage
+                imgSrc={`data:image/png;base64,${image.imageData}`}
+                name={route.name}
+                region={getRegionFromRouteUniqId(route.uniqId)}
+                grade={route.grade}
+              />
+            </div>
           : image?.error}
         </div>
       </div>
