@@ -8,7 +8,7 @@ import { Image } from '../models/Image';
 import { DataSource } from 'typeorm';
 import type { ObjectLiteral } from 'typeorm';
 
-let AppDataSource: DataSource;
+let AppDataSource: DataSource | null = null;
 
 export async function getDataSource(): Promise<DataSource> {
   if (AppDataSource?.isInitialized) {
@@ -34,7 +34,14 @@ export async function getDataSource(): Promise<DataSource> {
         ],
         synchronize: process.env.NODE_ENV === 'development',
         logging: process.env.NODE_ENV === 'development',
-        logger: 'simple-console'
+        logger: 'simple-console',
+        ssl: process.env.NODE_ENV === 'production' ? { 
+          rejectUnauthorized: false 
+        } : false,
+        extra: {
+          max: 1, // Important for serverless
+          connectionTimeoutMillis: 5000,
+        }
         // useNewUrlParser: true,
         // useUnifiedTopology: true,
         // ssl: process.env.NODE_ENV === 'production',
@@ -63,4 +70,11 @@ export async function getDatabase() {
       return dataSource.getRepository<T>(entity);
     },
   };
+}
+
+export async function closeDataSource() {
+  if (AppDataSource?.isInitialized) {
+    await AppDataSource.destroy();
+    AppDataSource = null;
+  }
 }

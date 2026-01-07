@@ -1,4 +1,4 @@
-import { getDatabase } from '@/lib/database';
+import { closeDataSource, getDatabase } from '@/lib/database';
 import { Place } from '@/models/Place';
 import { Sector } from '@/models/Sector';
 import { Route } from '@/models/Route';
@@ -49,5 +49,7 @@ export async function searchByName(query: string): Promise<FoundResults | []> {
   } catch (error) {
     console.error('Ошибка поиска по имени: ', error);
     throw new Error('Ошибка поиска по имени');
+  } finally {
+    await closeDataSource();
   }
 }

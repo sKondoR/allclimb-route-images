@@ -1,6 +1,6 @@
 'use server';
 import { ALLCLIMB_URL } from '@/shared/constants/allclimb';
-import { getDatabase } from '@/lib/database';
+import { closeDataSource, getDatabase } from '@/lib/database';
 import { Region } from '@/models/Region';
 import { Place } from '@/models/Place';
 import { Sector } from '@/models/Sector';
@@ -183,5 +183,6 @@ export async function scrapRoutes() {
     console.error('Ошибка на загрузке данных с Allclimb: ', error);
     throw new Error('Ошибка на загрузке данных с Allclimb');
   } finally {
+    await closeDataSource();
   }
 }
