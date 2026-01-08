@@ -14,10 +14,29 @@ import fs from 'fs';
 function logFilesInDir(globPattern: any) {
   const dirPath = globPattern.substring(0, globPattern.lastIndexOf('/'));
   if (fs.existsSync(dirPath)) {
-    console.log(`\n📁 Contents of ${dirPath}:`);
-    const files = fs.readdirSync(dirPath);
-    files.forEach(file => {
-      console.log(`  └── ${file}`);
+  console.log(`\n📁 Contents of ${dirPath}:`);
+  const items = fs.readdirSync(dirPath);
+
+  // Sort: directories first, then files
+  items
+    .sort((a, b) => {
+      const aPath = path.join(dirPath, a);
+      const bPath = path.join(dirPath, b);
+      const aIsDir = fs.statSync(aPath).isDirectory();
+      const bIsDir = fs.statSync(bPath).isDirectory();
+      if (aIsDir && !bIsDir) return -1;
+      if (!aIsDir && bIsDir) return 1;
+      return a.localeCompare(b); // Alphabetical within groups
+    })
+    .forEach(item => {
+      const itemPath = path.join(dirPath, item);
+      const stats = fs.statSync(itemPath);
+
+      if (stats.isDirectory()) {
+        console.log(`  📂 [DIR]  ${item}`);
+      } else {
+        console.log(`  📄 [FILE] ${item}`);
+      }
     });
   } else {
     console.log(`\n🚫 Directory does not exist: ${dirPath}`);
