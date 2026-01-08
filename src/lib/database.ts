@@ -1,47 +1,13 @@
 import 'reflect-metadata';
-import { TestEntity } from './models/TestEntity';
-import { Place } from './models/Place';
-import { Region } from './models/Region';
-import { Route } from './models/Route';
-import { Sector } from './models/Sector';
-import { Settings } from './models/Settings';
-import { Image } from './models/Image';
 import { DataSource } from 'typeorm';
 import type { ObjectLiteral } from 'typeorm';
-import path from 'path';
-import fs from 'fs';
 
-function logFilesInDir(globPattern: any) {
-  const dirPath = globPattern.substring(0, globPattern.lastIndexOf('/'));
-  if (fs.existsSync(dirPath)) {
-  console.log(`\n📁 Contents of ${dirPath}:`);
-  const items = fs.readdirSync(dirPath);
-
-  // Sort: directories first, then files
-  items
-    .sort((a, b) => {
-      const aPath = path.join(dirPath, a);
-      const bPath = path.join(dirPath, b);
-      const aIsDir = fs.statSync(aPath).isDirectory();
-      const bIsDir = fs.statSync(bPath).isDirectory();
-      if (aIsDir && !bIsDir) return -1;
-      if (!aIsDir && bIsDir) return 1;
-      return a.localeCompare(b); // Alphabetical within groups
-    })
-    .forEach(item => {
-      const itemPath = path.join(dirPath, item);
-      const stats = fs.statSync(itemPath);
-
-      if (stats.isDirectory()) {
-        console.log(`  📂 [DIR]  ${item}`);
-      } else {
-        console.log(`  📄 [FILE] ${item}`);
-      }
-    });
-  } else {
-    console.log(`\n🚫 Directory does not exist: ${dirPath}`);
-  }
-}
+import { Settings } from '../models/Settings.entity';
+import { Region } from '../models/Region.entity';
+import { Place } from '../models/Place.entity';
+import { Sector } from '../models/Sector.entity';
+import { Route } from '../models/Route.entity';
+import { Image } from '../models/Image.entity';
 
 let AppDataSource: DataSource | null = null;
 
@@ -50,60 +16,8 @@ export async function getDataSource(): Promise<DataSource> {
     return AppDataSource;
   }
   const isProd = process.env.NODE_ENV === 'production';
-  const entitiesPath = isProd
-    ? [
-        path.join(process.cwd(), 'src', 'models', '*.ts'), // dev
-        path.join(__dirname, '..', 'models', '*.js'),     // build
-        path.join(__dirname, 'models', '*.js'),           // .next/server
-      ]
-    : [
-        TestEntity,
-        Settings,
-        Region,
-        Place,
-        Sector,
-        Route,
-        Image,
-      ];
-
-    // console.log('=== DATABASE DEBUG INFO ===');
-    // console.log('NODE_ENV:', process.env.NODE_ENV);
-    // console.log('Current directory:', __dirname);
-    // console.log('Process directory:', process.cwd());
-    // console.log('entitiesPath:', isProd, entitiesPath);
-    // [
-    //   './server/',
-    //   './.next/',
-    //   './.next/standalone/',
-    //   './.next/server/',
-    // ].forEach(logFilesInDir);
-
-    // List files in entities directory
-    // try {
-    //   const modelsPath = path.join(__dirname, 'models');
-    //   console.log('Entity path:', modelsPath);
-      
-    //   if (fs.existsSync(modelsPath)) {
-    //     const files = fs.readdirSync(modelsPath);
-    //     console.log('Entity files found:', files);
-    //   } else {
-    //     console.log('Entity directory does not exist!');
-    //   }
-    // } catch (error) {
-    //   console.log('Error reading entity directory:', error);
-    // }
-      
-    console.log('Entities being registered:', [
-      TestEntity,
-      Settings,
-      Region,
-      Place,
-      Sector,
-      Route,
-      Image,
-    ].map(e => e.name));
-
   try {
+    console.log(__dirname);
     AppDataSource = new DataSource({
         type: 'postgres',
         host: process.env.POSTGRES_HOST,
@@ -112,7 +26,7 @@ export async function getDataSource(): Promise<DataSource> {
         database: process.env.POSTGRES_DB_NAME,
         username: process.env.POSTGRES_USER,
         password: process.env.POSTGRES_PASSWORD,
-        entities: entitiesPath,
+        entities: [Region, Place, Sector, Route, Image, Settings],
         synchronize: !isProd,
         logging: !isProd,
         logger: 'simple-console',

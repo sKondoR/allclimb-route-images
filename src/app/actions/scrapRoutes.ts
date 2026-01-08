@@ -1,10 +1,10 @@
 'use server';
 import { ALLCLIMB_URL } from '@/shared/constants/allclimb';
 import { closeDataSource, getDatabase } from '@/lib/database';
-import { Region } from '../../lib/models/Region';
-import { Place } from '../../lib/models/Place';
-import { Sector } from '../../lib/models/Sector';
-import { Route } from '../../lib/models/Route';
+import { Region } from '../../models/Region.entity';
+import { Place } from '../../models/Place.entity';
+import { Sector } from '../../models/Sector.entity';
+import { Route } from '../../models/Route.entity';
 import { preparePlaces, prepareRoutes, prepareSectors } from './scrapRoutes-utils';
 import chunkArray from '@/shared/utils/chunkArray';
 import { formatDuration } from '@/shared/utils/formatDuration';
@@ -102,7 +102,7 @@ export async function scrapRoutes() {
     await placeRepo.save(loadedPlaces);
     console.log('мест: ', loadedPlaces.length);
 
-    const BATCH_SIZE = 50;
+    const BATCH_SIZE = 200;
 
     const placeChunks = chunkArray(loadedPlaces, BATCH_SIZE);
     const loadedSectors: ISector[] = [];
@@ -138,6 +138,7 @@ export async function scrapRoutes() {
 
     const sectorsChunks = chunkArray(loadedSectors, BATCH_SIZE);
     const loadedRoutes: IRoute[] = [];
+    // for (const sectorsChunk of [sectorsChunks[0]]) {
     for (const sectorsChunk of sectorsChunks) {
       await Promise.all(
         sectorsChunk.map(async (sector: ISector) => {
@@ -187,6 +188,6 @@ export async function scrapRoutes() {
     console.error('Ошибка на загрузке данных с Allclimb: ', error);
     throw new Error('Ошибка на загрузке данных с Allclimb');
   } finally {
-    await closeDataSource();
+    // await closeDataSource();
   }
 }

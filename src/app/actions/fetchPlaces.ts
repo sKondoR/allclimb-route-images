@@ -1,6 +1,6 @@
 'use server';
 import { getDatabase } from '@/lib/database';
-import { Place } from '../../lib/models/Place';
+import { Place } from '../../models/Place.entity';
 import type { IPlace } from '@/shared/types/IPlace';
 
 export async function fetchPlaces<T extends keyof IPlace>(whereParams: Partial<Record<T, IPlace[T]>>): Promise<IPlace[]> {

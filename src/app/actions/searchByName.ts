@@ -1,7 +1,7 @@
 import { closeDataSource, getDatabase } from '@/lib/database';
-import { Place } from '../../lib/models/Place';
-import { Sector } from '../../lib/models/Sector';
-import { Route } from '../../lib/models/Route';
+import { Place } from '../../models/Place.entity';
+import { Sector } from '../../models/Sector.entity';
+import { Route } from '../../models/Route.entity';
 import type { FoundResults } from '@/shared/types/SearchResults';
 
 export async function searchByName(query: string): Promise<FoundResults | []> {
@@ -50,6 +50,6 @@ export async function searchByName(query: string): Promise<FoundResults | []> {
     console.error('Ошибка поиска по имени: ', error);
     throw new Error('Ошибка поиска по имени');
   } finally {
-    await closeDataSource();
+    // await closeDataSource();
   }
 }

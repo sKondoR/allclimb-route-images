@@ -1,7 +1,7 @@
 'use server';
 
 import { getDatabase } from '@/lib/database';
-import { Settings } from '../../lib/models/Settings';
+import { Settings } from '../../models/Settings.entity';
 import type { IScrapStats } from '@/shared/types/IScrapStats';
 
 export async function updateScrapStats(stats: IScrapStats) {
@@ -13,7 +13,7 @@ export async function updateScrapStats(stats: IScrapStats) {
   if (!settings) {
     settings = new Settings();
   }
-  const maxRoutes = stats.routes > settings.scrapStats.routes ? stats.routes : settings.scrapStats.routes;
+  const maxRoutes = stats.routes > (settings.scrapStats?.routes || 0) ? stats.routes : settings.scrapStats.routes;
   settings.scrapStats = { 
     ...stats,
     routes: maxRoutes,
