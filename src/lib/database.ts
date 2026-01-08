@@ -16,7 +16,15 @@ export async function getDataSource(): Promise<DataSource> {
   }
   const isProd = process.env.NODE_ENV === 'production';
   const entitiesPath = isProd
-    ? ['**/models/*.js' ]
+    // ? ['**/models/*.js' ]
+    ? [
+        Settings,
+        Region,
+        Place,
+        Sector,
+        Route,
+        Image,
+      ]
     : [
         Settings,
         Region,
@@ -43,9 +51,9 @@ export async function getDataSource(): Promise<DataSource> {
         } : false,
         extra: {
           max: 1, // Important for serverless
+          connectionLimit: 10,
           idleTimeoutMillis: 600000, // Время ожидания бездействия перед закрытием соединения
           connectionTimeoutMillis: 20000, // Таймаут подключения к базе данных
-           
         }
         // useNewUrlParser: true,
         // useUnifiedTopology: true,
