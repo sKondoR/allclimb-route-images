@@ -1,14 +1,18 @@
 'use server';
 import { ALLCLIMB_URL } from '@/shared/constants/allclimb';
 import { closeDataSource, getDatabase } from '@/lib/database';
-import { Region } from '@/models/Region';
-import { Place } from '@/models/Place';
-import { Sector } from '@/models/Sector';
-import { Route } from '@/models/Route';
+import { Region } from '../../lib/models/Region';
+import { Place } from '../../lib/models/Place';
+import { Sector } from '../../lib/models/Sector';
+import { Route } from '../../lib/models/Route';
 import { preparePlaces, prepareRoutes, prepareSectors } from './scrapRoutes-utils';
 import chunkArray from '@/shared/utils/chunkArray';
 import { formatDuration } from '@/shared/utils/formatDuration';
 import { updateScrapStats } from './updateScrapStats';
+import type { IPlace } from '@/shared/types/IPlace';
+import type { IRegion } from '@/shared/types/IRegion';
+import type { ISector } from '@/shared/types/ISector';
+import type { IRoute } from '@/shared/types/IRoute';
 
 interface FetchErrors {
   regions: string[];
@@ -76,8 +80,8 @@ export async function scrapRoutes() {
     loadedRegions = await regionRepo.save(loadedRegions);
     console.log('регионов: ', loadedRegions.length);
 
-    let loadedPlaces: Place[] = [];
-    const placesDataPromises = loadedRegions.map(async (region: Region, i: number) => {
+    let loadedPlaces: IPlace[] = [];
+    const placesDataPromises = loadedRegions.map(async (region: IRegion, i: number) => {
       try {
         const { data } = await getApiResponse(`${ALLCLIMB_URL}${region.link}`);
         const regionPlaces = preparePlaces(data, region.id, region.uniqId);    
@@ -101,10 +105,10 @@ export async function scrapRoutes() {
     const BATCH_SIZE = 50;
 
     const placeChunks = chunkArray(loadedPlaces, BATCH_SIZE);
-    const loadedSectors: Sector[] = [];
+    const loadedSectors: ISector[] = [];
     for (const placeChunk of placeChunks) {
       await Promise.all(
-        placeChunk.map(async (place: Place) => {
+        placeChunk.map(async (place: IPlace) => {
           if (!place.link) return;
 
           try {
@@ -133,10 +137,10 @@ export async function scrapRoutes() {
     console.log('секторов: ', loadedSectors.length);
 
     const sectorsChunks = chunkArray(loadedSectors, BATCH_SIZE);
-    const loadedRoutes: Route[] = [];
+    const loadedRoutes: IRoute[] = [];
     for (const sectorsChunk of sectorsChunks) {
       await Promise.all(
-        sectorsChunk.map(async (sector: Sector) => {
+        sectorsChunk.map(async (sector: ISector) => {
           if (!sector.link) return;
 
           try {

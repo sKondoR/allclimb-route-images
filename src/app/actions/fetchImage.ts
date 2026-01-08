@@ -1,6 +1,6 @@
 'use server';
 import { getDatabase } from '@/lib/database';
-import { Image } from '@/models/Image';
+import { Image } from '../../lib/models/Image';
 import type { IImage } from '@/shared/types/IImage';
 
 export async function fetchImage<T extends keyof IImage>(

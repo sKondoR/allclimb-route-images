@@ -6,7 +6,7 @@ import chromium from '@sparticuz/chromium';
 import type { IRoute } from '@/shared/types/IRoute';
 import { removeLastUrlSegment } from '@/shared/utils/removeLastUrlSegment';
 import { closeDataSource, getDatabase } from '@/lib/database';
-import { Image } from '@/models/Image';
+import { Image } from '../../lib/models/Image';
 import { fetchImage } from './fetchImage';
 
 export async function scrapRouteImage(route: IRoute) {

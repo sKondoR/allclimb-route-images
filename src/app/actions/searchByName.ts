@@ -1,7 +1,7 @@
 import { closeDataSource, getDatabase } from '@/lib/database';
-import { Place } from '@/models/Place';
-import { Sector } from '@/models/Sector';
-import { Route } from '@/models/Route';
+import { Place } from '../../lib/models/Place';
+import { Sector } from '../../lib/models/Sector';
+import { Route } from '../../lib/models/Route';
 import type { FoundResults } from '@/shared/types/SearchResults';
 
 export async function searchByName(query: string): Promise<FoundResults | []> {

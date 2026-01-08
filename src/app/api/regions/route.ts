@@ -1,7 +1,7 @@
 // app/api/routes/route.ts
 import { NextRequest } from 'next/server';
 import { getDatabase } from '@/lib/database';
-import { Region } from '@/models/Region';
+import { Region } from '../../../lib/models/Region';
 
 export async function POST(request: NextRequest) {
   const params = await request.json();

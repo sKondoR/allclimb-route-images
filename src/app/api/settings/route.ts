@@ -1,6 +1,6 @@
 import { NextRequest } from 'next/server';
 import { getDatabase } from '@/lib/database';
-import { Settings } from '../../../models/Settings';
+import { Settings } from '../../../lib/models/Settings';
 
 export async function GET(request: NextRequest) {
   const { getRepository } = await getDatabase();

@@ -1,6 +1,6 @@
-import { Place } from '@/models/Place';
-import { Sector } from '@/models/Sector';
-import { Route } from '@/models/Route';
+import type { IPlace } from '@/shared/types/IPlace';
+import type { IRoute } from '@/shared/types/IRoute';
+import type { ISector } from '@/shared/types/ISector';
 import { removeTags } from '@/shared/utils/removeTags';
 
 const extractNumRoutes = (str: string | number): number => {
@@ -21,7 +21,7 @@ export const preparePlaces = (data: { result?: any[]; }, id: string, uniqId: str
       const numroutes = extractNumRoutes(el.numroutes);
 
       // Проверяем, есть ли уже элемент с таким именем
-      const existingIndex = acc.findIndex((item: Place) => item.name === el.name);
+      const existingIndex = acc.findIndex((item: IPlace) => item.name === el.name);
       if (!id) {
         console.log('preparePlaces no id: ', existingIndex, el);
       }
@@ -44,7 +44,7 @@ export const preparePlaces = (data: { result?: any[]; }, id: string, uniqId: str
       }
 
       return acc;
-    }, [] as Place[])
+    }, [] as IPlace[])
   : [];
 };
 
@@ -54,7 +54,7 @@ export const prepareSectors = (data: { result?: any[]; }, id: string, uniqId: st
       const numroutes = extractNumRoutes(el.numroutes);
 
       // Проверяем, есть ли уже элемент с таким именем
-      const existingIndex = acc.findIndex((item: Sector) => item.name === el.name);
+      const existingIndex = acc.findIndex((item: ISector) => item.name === el.name);
       const sector = {
         uniqId: `${uniqId}/${el.name}`,
         name: el.name,
@@ -74,14 +74,14 @@ export const prepareSectors = (data: { result?: any[]; }, id: string, uniqId: st
       }
 
       return acc;
-    }, [] as Sector[])
+    }, [] as ISector[])
   : [];
 
   export const prepareRoutes = (data: { images?: any }, id: string, uniqId: string ) => Array.isArray(data?.images)
   ? data.images.reduce((acc, image) => {
       image?.Routes?.forEach((r: any) => {
         // Проверяем, есть ли уже элемент с таким именем
-        const existingIndex = acc.findIndex((item: Route) => item.name === r.name && item.sectorId === id);
+        const existingIndex = acc.findIndex((item: IRoute) => item.name === r.name && item.sectorId === id);
         const route = {
           uniqId: `${uniqId}/${r.name}`,
           name: r.name,
@@ -103,5 +103,5 @@ export const prepareSectors = (data: { result?: any[]; }, id: string, uniqId: st
         }
       });
       return acc;
-    }, [] as Route[])
+    }, [] as IRoute[])
   : [];

@@ -1,6 +1,6 @@
 export interface IRoute {
     id: string;
-    uniqId?: string;
+    uniqId: string;
     name: string;
     link?: string;
     sectorLink?: string;
