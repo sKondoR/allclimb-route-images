@@ -1,18 +1,13 @@
 'use server';
+
 import { ALLCLIMB_URL } from '@/shared/constants/allclimb';
-import { closeDataSource, getDatabase } from '@/lib/database';
-import { Region } from '../../models/Region.entity';
-import { Place } from '../../models/Place.entity';
-import { Sector } from '../../models/Sector.entity';
-import { Route } from '../../models/Route.entity';
-import { preparePlaces, prepareRoutes, prepareSectors } from './scrapRoutes-utils';
+import { db } from '@/lib/db/index'; // Импорт Drizzle DB
+import { regions, places, sectors, routes, settings } from '@/lib/db/schema';
+import { preparePlaces, prepareSectors, prepareRoutes } from './scrapRoutes-utils';
 import chunkArray from '@/shared/utils/chunkArray';
 import { formatDuration } from '@/shared/utils/formatDuration';
-import { updateScrapStats } from './updateScrapStats';
-import type { IPlace } from '@/shared/types/IPlace';
-import type { IRegion } from '@/shared/types/IRegion';
-import type { ISector } from '@/shared/types/ISector';
-import type { IRoute } from '@/shared/types/IRoute';
+import { eq } from 'drizzle-orm';
+import type { IPlace, IRoute, IScrapStats, ISector } from '@/lib/db/schema';
 
 interface FetchErrors {
   regions: string[];
@@ -39,134 +34,127 @@ export async function scrapRoutes() {
           throw `${response.status} ${response.statusText}`;
         } else {
           const text = await response.text();
-          data = text ? JSON.parse(text) : {};          
+          data = text ? JSON.parse(text) : {};
         }
       } catch (e) {
-        console.log('error: ', e)
+        console.log('error: ', e);
         throw new Error(`Failed to parse response as JSON: ${response.status} ${response.statusText}`);
       }
 
       return {
         status: response.status,
-        data
+        data,
       };
     };
 
+    // Получаем регионы
     const { data: { result } } = await getApiResponse(`${ALLCLIMB_URL}/ru/guides/`);
-    let loadedRegions = result ? result.map((el: any) => ({
-      ...el,
-      uniqId: `${el.country}/${el.name}`,
-      link: el.web_guide_link,
-    })) : [];
-
-    const { getRepository } = await getDatabase();
-    const regionRepo = getRepository(Region);
-    const placeRepo = getRepository(Place);
-    const sectorRepo = getRepository(Sector);
-    const routeRepo = getRepository(Route);
-    // полностью чистим таблицы от старых данных
-    await routeRepo.createQueryBuilder().delete().from(Route).execute();
-    await sectorRepo.createQueryBuilder().delete().from(Sector).execute();
-    await placeRepo.createQueryBuilder().delete().from(Place).execute();
-    await regionRepo.createQueryBuilder().delete().from(Region).execute();
+    let loadedRegions: (typeof regions.$inferInsert)[] = result
+      ? result.map((el: any) => ({
+          uniqId: `${el.country}/${el.name}`,
+          name: el.name,
+          country: el.country,
+          season: el.season || null,
+          link: el.web_guide_link,
+        }))
+      : [];
 
     const fetchErrors: FetchErrors = {
       regions: [],
       places: [],
       sectors: [],
     };
-    
-    // Сохраняем загруженные регионы
-    loadedRegions = await regionRepo.save(loadedRegions);
+
+    // Очистка таблиц
+    await db.delete(routes);
+    await db.delete(sectors);
+    await db.delete(places);
+    await db.delete(regions);
+
+    // Сохранение регионов
+    if (loadedRegions.length > 0) {
+      await db.insert(regions).values(loadedRegions);
+    }
     console.log('регионов: ', loadedRegions.length);
 
+    // Загрузка мест
     let loadedPlaces: IPlace[] = [];
-    const placesDataPromises = loadedRegions.map(async (region: IRegion, i: number) => {
+    const placesDataPromises = loadedRegions.map(async (region) => {
       try {
         const { data } = await getApiResponse(`${ALLCLIMB_URL}${region.link}`);
-        const regionPlaces = preparePlaces(data, region.id, region.uniqId);    
-        loadedPlaces.push(...regionPlaces);         
+        const regionPlaces = preparePlaces(data, region.id!, region.uniqId);
+        loadedPlaces.push(...(regionPlaces as IPlace[]));
       } catch (err) {
         fetchErrors.regions.push(region.name);
       }
-      return region;
     });
 
-    // Дожидаемся всех запросов
     await Promise.all(placesDataPromises);
-
-    const withoutRegionId = loadedPlaces.filter((el: any) => !el.regionId);
-    console.log('потерян regionId', withoutRegionId);
-
-    // Сохраняем загруженные места региона
-    await placeRepo.save(loadedPlaces);
     console.log('мест: ', loadedPlaces.length);
 
-    const BATCH_SIZE = 200;
+    // Сохранение мест
+    if (loadedPlaces.length > 0) {
+      await db.insert(places).values(loadedPlaces);
+    }
 
+    // Загрузка секторов
+    const BATCH_SIZE = 200;
     const placeChunks = chunkArray(loadedPlaces, BATCH_SIZE);
     const loadedSectors: ISector[] = [];
+
     for (const placeChunk of placeChunks) {
       await Promise.all(
-        placeChunk.map(async (place: IPlace) => {
+        placeChunk.map(async (place) => {
           if (!place.link) return;
 
           try {
             const { data } = await getApiResponse(`${ALLCLIMB_URL}${place.link}`);
-            const placeSectors = prepareSectors(data, place.id, place.uniqId);
+            const placeSectors = prepareSectors(data, place.id!, place.uniqId);
             loadedSectors.push(...placeSectors);
             console.log('загрузка мест, секторов: ', loadedSectors.length);
           } catch (err) {
             fetchErrors.places.push(place.name);
           }
 
-          // Задержка между запросами
-          await new Promise(resolve => setTimeout(resolve, 50));
+          await new Promise((resolve) => setTimeout(resolve, 50));
         })
       );
-
-      // Небольшая задержка между пакетами, чтобы не перегружать сервер
       await new Promise((resolve) => setTimeout(resolve, 300));
     }
 
-    const withoutPlaceId = loadedSectors.filter((el: any) => !el.placeId);
-    console.log('потерян placeId', withoutPlaceId.length);
-
-    // Сохраняем загруженные сектора
-    await sectorRepo.save(loadedSectors);
+    // Сохранение секторов
+    if (loadedSectors.length > 0) {
+      await db.insert(sectors).values(loadedSectors);
+    }
     console.log('секторов: ', loadedSectors.length);
 
+    // Загрузка маршрутов
     const sectorsChunks = chunkArray(loadedSectors, BATCH_SIZE);
     const loadedRoutes: IRoute[] = [];
-    // for (const sectorsChunk of [sectorsChunks[0]]) {
+
     for (const sectorsChunk of sectorsChunks) {
       await Promise.all(
-        sectorsChunk.map(async (sector: ISector) => {
+        sectorsChunk.map(async (sector) => {
           if (!sector.link) return;
 
           try {
             const { data } = await getApiResponse(`${ALLCLIMB_URL}${sector.link}`);
-            const sectorRoutes = prepareRoutes(data, sector.id, sector.uniqId);
+            const sectorRoutes = prepareRoutes(data, sector.id!, sector.uniqId);
             loadedRoutes.push(...sectorRoutes);
-            // if (sectorRoutes.length === 0) {
-            //   console.log('нет трасс для сектора: ', sector.link);
-            // }        
-            await routeRepo.save(sectorRoutes);    
+            await db.insert(routes).values(sectorRoutes);
           } catch (err) {
             fetchErrors.sectors.push(sector.name);
           }
 
-          // Задержка между запросами
-          await new Promise(resolve => setTimeout(resolve, 50));
+          await new Promise((resolve) => setTimeout(resolve, 50));
         })
       );
-
-      // Небольшая задержка между пакетами, чтобы не перегружать сервер
       await new Promise((resolve) => setTimeout(resolve, 300));
     }
 
+    // Обновление статистики
     const endTime = new Date();
-    const stats = {
+    const stats: IScrapStats = {
       regions: loadedRegions.length,
       regionsErrors: fetchErrors.regions.length,
       places: loadedPlaces.length,
@@ -175,19 +163,28 @@ export async function scrapRoutes() {
       sectorsErrors: fetchErrors.sectors.length,
       routes: loadedRoutes.length,
       scrapDate: endTime.toLocaleDateString('ru-RU'),
-      scrapDuration: formatDuration(startTime, endTime)
-    }
+      scrapDuration: formatDuration(startTime, endTime),
+    };
+
     console.log(`
       ошибки загрузки данных для регионов: ${stats.regionsErrors} / ${stats.regions}
       ошибки загрузки данных для мест: ${stats.placesErrors} / ${stats.places}
       ошибки загрузки данных для секторов: ${stats.sectorsErrors} / ${stats.sectors}
-      трасс загруженно: ${loadedRoutes.length}
-    `)
-    updateScrapStats(stats);
+      трасс загружено: ${loadedRoutes.length}
+    `);
+
+    // Обновление статистики в БД
+    await db
+      .insert(settings)
+      .values({ scrapStats: stats })
+      .onConflictDoUpdate({
+        target: settings.id,
+        set: { scrapStats: stats },
+      });
+
+    return stats;
   } catch (error) {
     console.error('Ошибка на загрузке данных с Allclimb: ', error);
     throw new Error('Ошибка на загрузке данных с Allclimb');
-  } finally {
-    // await closeDataSource();
   }
 }

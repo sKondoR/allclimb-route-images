@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import ScrapButton from '../ScrapButtton/ScrapButton';
 import RecursiveTree from './Tree';
-import type { IRegion } from '@/shared/types/IRegion';
+import type { IRegion } from '@/lib/db/schema';
 
 export default function TreeTest() {
   const [regions, setRegions] = useState<IRegion[]>([]);
@@ -23,7 +23,7 @@ export default function TreeTest() {
           },
         }),
       });
-      const data = await res.json();
+      const { data } = await res.json();
       console.log('data', data);
       setRegions(data);
     }
@@ -31,7 +31,7 @@ export default function TreeTest() {
   }, [regions.length]);
 
   if (!regions?.length) {
-    return;
+    return <ScrapButton />;
   }
 
   const initialTreeData = regions.map((region) => ({
@@ -40,7 +40,7 @@ export default function TreeTest() {
     link: region.link,
     country: region.country,
     hasChildren: !!region.link,
-  }));
+  })) as TreeNode[];
 
   console.log('initialTreeData', initialTreeData);
 
@@ -49,7 +49,7 @@ export default function TreeTest() {
       <div className="mb-5">
         <ScrapButton />
       </div>
-      <RecursiveTree
+      <RecursiveTree 
         initialData={initialTreeData}
       />
     </>

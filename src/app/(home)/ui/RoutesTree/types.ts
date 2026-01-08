@@ -1,5 +1,5 @@
 interface TreeNode {
-  id: string;
+  id: number;
   name: string;
   hasChildren?: boolean;
   link?: string;

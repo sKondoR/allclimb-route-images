@@ -1,19 +1,29 @@
-import { NextRequest } from 'next/server';
-import { getDatabase } from '@/lib/database';
-import { Settings } from '../../../models/Settings.entity';
+import { NextRequest, NextResponse } from 'next/server';
+import { SettingsService } from '@/lib/services/settings.service';
 
 export async function GET(request: NextRequest) {
-  const { getRepository } = await getDatabase();
-  const settingsRepo = getRepository(Settings);
-  console.log('Settings', Settings);
   try {
-    const settings = await settingsRepo.find({
-      where: {},
+
+    const settings = await SettingsService.find();
+    // console.log('✅ Settings fetched:', settings);
+    return NextResponse.json({
+      success: true,
+      data: settings,
     });
-    //console.log('settings> ', settings);
-    return Response.json(settings);
-  } catch (err) {
-    console.error('DB Query failed:', err);
-    return Response.json({ error: 'Failed to fetch settings' }, { status: 500 });
+  } catch (error) {
+    // console.error('❌ Error in GET /api/settings:', error);
+
+    const message = error instanceof Error ? error.message : 'Unknown error';
+    const stack = error instanceof Error ? error.stack : undefined;
+
+    return NextResponse.json(
+      {
+        success: false,
+        error: 'Failed to fetch settings ',
+        message,
+        stack,
+      },
+      { status: 500 }
+    );
   }
 }

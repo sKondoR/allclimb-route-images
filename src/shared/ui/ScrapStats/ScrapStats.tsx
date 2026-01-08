@@ -10,7 +10,7 @@ export default function ScrapStats() {
     useEffect(() => {
       const load = async function () {
         const res = await fetch('/api/settings');
-        const data = await res.json();
+        const { data } = await res.json();
         setSettings(data);
       }
       load();

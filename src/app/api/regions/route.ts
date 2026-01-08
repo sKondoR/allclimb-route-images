@@ -1,13 +1,29 @@
-// app/api/routes/route.ts
-import { NextRequest } from 'next/server';
-import { getDatabase } from '@/lib/database';
-import { Region } from '../../../models/Region.entity';
+import { NextRequest, NextResponse } from 'next/server';
+import { RegionService } from '@/lib/services/regions.service';
 
 export async function POST(request: NextRequest) {
-  const params = await request.json();
-  const { getRepository } = await getDatabase();
-  const regionRepo = getRepository(Region);
-  
-  const regions = await regionRepo.find(params);
-  return Response.json(regions);
+  try {
+    const filters = await request.json();
+    const regions = await RegionService.find(filters);
+    // console.log('✅ regions fetched:', regions);
+    return NextResponse.json({
+      success: true,
+      data: regions,
+    });
+  } catch (error) {
+    // console.error('❌ Error in GET /api/regions:', error);
+
+    const message = error instanceof Error ? error.message : 'Unknown error';
+    const stack = error instanceof Error ? error.stack : undefined;
+
+    return NextResponse.json(
+      {
+        success: false,
+        error: 'Failed to fetch regions ',
+        message,
+        stack,
+      },
+      { status: 500 }
+    );
+  }
 }

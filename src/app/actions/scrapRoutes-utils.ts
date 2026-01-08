@@ -1,6 +1,5 @@
-import type { IPlace } from '@/shared/types/IPlace';
-import type { IRoute } from '@/shared/types/IRoute';
-import type { ISector } from '@/shared/types/ISector';
+
+import type { IPlace, IRoute, ISector } from '@/lib/db/schema';
 import { removeTags } from '@/shared/utils/removeTags';
 
 const extractNumRoutes = (str: string | number): number => {
@@ -11,7 +10,7 @@ const extractNumRoutes = (str: string | number): number => {
     return match ? parseInt(match[1], 10) : 0;
 };
 
-export const preparePlaces = (data: { result?: any[]; }, id: string, uniqId: string ) => {
+export const preparePlaces = (data: { result?: any[]; }, id: number, uniqId: string ) => {
   if (!data?.result) {
     console.log('preparePlaces error: ', data, id, uniqId);
   }
@@ -48,7 +47,7 @@ export const preparePlaces = (data: { result?: any[]; }, id: string, uniqId: str
   : [];
 };
 
-export const prepareSectors = (data: { result?: any[]; }, id: string, uniqId: string ) => Array.isArray(data?.result)
+export const prepareSectors = (data: { result?: any[]; }, id: number, uniqId: string ) => Array.isArray(data?.result)
   ? data.result.reduce((acc, el) => {
 
       const numroutes = extractNumRoutes(el.numroutes);
@@ -77,11 +76,11 @@ export const prepareSectors = (data: { result?: any[]; }, id: string, uniqId: st
     }, [] as ISector[])
   : [];
 
-  export const prepareRoutes = (data: { images?: any }, id: string, uniqId: string ) => Array.isArray(data?.images)
+  export const prepareRoutes = (data: { images?: any }, id: number, uniqId: string ) => Array.isArray(data?.images)
   ? data.images.reduce((acc, image) => {
       image?.Routes?.forEach((r: any) => {
         // Проверяем, есть ли уже элемент с таким именем
-        const existingIndex = acc.findIndex((item: IRoute) => item.name === r.name && item.sectorId === id);
+        const existingIndex = acc.findIndex((item: IRoute) => item.name === r.name && Number(item.sectorId) === id);
         const route = {
           uniqId: `${uniqId}/${r.name}`,
           name: r.name,
