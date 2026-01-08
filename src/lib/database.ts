@@ -49,7 +49,7 @@ export async function getDataSource(): Promise<DataSource> {
       console.log('Error reading entity directory:', error);
     }
       
-  const modelsPath = path.join(__dirname, 'models');  
+  const modelsPath = [path.join(__dirname, 'models')];  
   try {
     AppDataSource = new DataSource({
         type: 'postgres',
