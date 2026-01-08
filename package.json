@@ -4,9 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "next build && tsc -p tsconfig.server.json",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "vercel-build": "next build && tsc -p tsconfig.server.json && cp -r dist/models .next/standalone/dist/models"
   },
   "dependencies": {
     "@fortawesome/free-solid-svg-icons": "^7.1.0",
