@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany, Index } from 'typeorm';
 
-@Entity('sectors')
+@Entity('sector')
 export class Sector {
   @PrimaryGeneratedColumn()
   id!: string;

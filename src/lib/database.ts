@@ -50,15 +50,21 @@ export async function getDataSource(): Promise<DataSource> {
     return AppDataSource;
   }
   const isProd = process.env.NODE_ENV === 'production';
-  const entitiesPath = [
-    TestEntity,
-    Settings,
-    Region,
-    Place,
-    Sector,
-    Route,
-    Image,
-  ];
+  const entitiesPath = isProd
+    ? [
+        path.join(process.cwd(), 'src', 'models', '*.ts'), // dev
+        path.join(__dirname, '..', 'models', '*.js'),     // build
+        path.join(__dirname, 'models', '*.js'),           // .next/server
+      ]
+    : [
+        TestEntity,
+        Settings,
+        Region,
+        Place,
+        Sector,
+        Route,
+        Image,
+      ];
 
     // console.log('=== DATABASE DEBUG INFO ===');
     // console.log('NODE_ENV:', process.env.NODE_ENV);

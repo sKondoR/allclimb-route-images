@@ -1,6 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 
-@Entity('regions')
+@Entity('region')
 export class Region {
   @PrimaryGeneratedColumn()
   id!: string;

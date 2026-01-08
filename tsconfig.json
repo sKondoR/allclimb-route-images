@@ -62,6 +62,7 @@
     "**/*.mts",
     "dist/types/**/*.ts",
     "dist/dev/types/**/*.ts",
+    "src/models/*.ts",
   ],
   "exclude": [
     "node_modules"
