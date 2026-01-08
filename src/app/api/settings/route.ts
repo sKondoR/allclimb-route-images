@@ -7,11 +7,10 @@ export async function GET(request: NextRequest) {
   const settingsRepo = getRepository(Settings);
   console.log('Settings', Settings);
   try {
-    // const settings = await settingsRepo.find({
-    //   where: {},
-    // });
-    // console.log('settings> ', settings);
-    const settings = [];
+    const settings = await settingsRepo.find({
+      where: {},
+    });
+    //console.log('settings> ', settings);
     return Response.json(settings);
   } catch (err) {
     console.error('DB Query failed:', err);
