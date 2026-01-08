@@ -26,6 +26,7 @@ export async function fetchTreeNode(level: number, parentId?: string): Promise<I
   const data = await fetchTreeData(level, parentId || '');
   const preparedData = data.map((el) => ({
     id: el.id,
+    uniqId: el.uniqId,
     name: el.name,
     link: el.link,
     numroutes: 'numroutes' in el ? el.numroutes : undefined,
