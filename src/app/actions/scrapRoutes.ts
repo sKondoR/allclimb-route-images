@@ -6,7 +6,6 @@ import { regions, places, sectors, routes, settings } from '@/lib/db/schema';
 import { preparePlaces, prepareSectors, prepareRoutes } from './scrapRoutes-utils';
 import chunkArray from '@/shared/utils/chunkArray';
 import { formatDuration } from '@/shared/utils/formatDuration';
-import { eq } from 'drizzle-orm';
 import type { IPlace, IRoute, IScrapStats, ISector } from '@/lib/db/schema';
 
 interface FetchErrors {
@@ -73,7 +72,7 @@ export async function scrapRoutes() {
 
     // Сохранение регионов
     if (loadedRegions.length > 0) {
-      await db.insert(regions).values(loadedRegions);
+      loadedRegions = await db.insert(regions).values(loadedRegions).returning();
     }
     console.log('регионов: ', loadedRegions.length);
 
@@ -94,13 +93,13 @@ export async function scrapRoutes() {
 
     // Сохранение мест
     if (loadedPlaces.length > 0) {
-      await db.insert(places).values(loadedPlaces);
+      loadedPlaces = await db.insert(places).values(loadedPlaces).returning();
     }
 
     // Загрузка секторов
     const BATCH_SIZE = 200;
     const placeChunks = chunkArray(loadedPlaces, BATCH_SIZE);
-    const loadedSectors: ISector[] = [];
+    let loadedSectors: ISector[] = [];
 
     for (const placeChunk of placeChunks) {
       await Promise.all(
@@ -124,7 +123,7 @@ export async function scrapRoutes() {
 
     // Сохранение секторов
     if (loadedSectors.length > 0) {
-      await db.insert(sectors).values(loadedSectors);
+      loadedSectors = await db.insert(sectors).values(loadedSectors).returning();
     }
     console.log('секторов: ', loadedSectors.length);
 

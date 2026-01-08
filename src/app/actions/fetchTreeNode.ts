@@ -3,12 +3,9 @@
 import { fetchPlaces } from './fetchPlaces';
 import { fetchSectors } from './fetchSectors';
 import { fetchRoutes } from './fetchRoutes';
+// import type { IPlace, IRoute, ISector } from '@/lib/db/schema';
 
-import type { IPlace } from '@/shared/types/IPlace';
-import type { ISector } from '@/shared/types/ISector';
-import type { IRoute } from '@/shared/types/IRoute';
-
-const fetchTreeData = async (level: number, parentId: string) => {
+const fetchTreeData = async (level: number, parentId: number | undefined) => {
   switch (level) {
     case 0:
       return await fetchPlaces({ regionId: parentId });
@@ -21,9 +18,19 @@ const fetchTreeData = async (level: number, parentId: string) => {
   }
 };
 
+export type TreeNode = {
+  id: number;
+  uniqId: string;
+  name: string;
+  link: string | null;
+  numroutes?: number | null;
+  hasChildren: boolean;
+};
 
-export async function fetchTreeNode(level: number, parentId?: string): Promise<IPlace[] | ISector[] | IRoute[]> {
-  const data = await fetchTreeData(level, parentId || '');
+
+// Promise<IPlace[] | ISector[] | IRoute[]>
+export async function fetchTreeNode(level: number, parentId?: number): Promise<TreeNode[]> {
+  const data = await fetchTreeData(level, parentId);
   const preparedData = data.map((el) => ({
     id: el.id,
     uniqId: el.uniqId,
