@@ -1,11 +1,11 @@
 import 'reflect-metadata';
-import { TestEntity } from '../models/TestEntity';
-import { Place } from '../models/Place';
-import { Region } from '../models/Region';
-import { Route } from '../models/Route';
-import { Sector } from '../models/Sector';
-import { Settings } from '../models/Settings';
-import { Image } from '../models/Image';
+import { TestEntity } from './models/TestEntity';
+import { Place } from './models/Place';
+import { Region } from './models/Region';
+import { Route } from './models/Route';
+import { Sector } from './models/Sector';
+import { Settings } from './models/Settings';
+import { Image } from './models/Image';
 import { DataSource } from 'typeorm';
 import type { ObjectLiteral } from 'typeorm';
 import path from 'path';
@@ -100,7 +100,7 @@ export async function getDataSource(): Promise<DataSource> {
       Route,
       Image,
     ].map(e => e.name));
-    
+
   try {
     AppDataSource = new DataSource({
         type: 'postgres',
