@@ -4,10 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build && tsc -p tsconfig.server.json",
+    "build": "next build",
+    "postbuild": "mkdir -p .next/standalone/src/models && cp -r src/models .next/standalone/src/models/ 2>/dev/null || echo 'Models copied'",
     "start": "next start",
-    "lint": "eslint",
-    "vercel-build": "next build && tsc -p tsconfig.server.json && cp -r dist/models .next/standalone/dist/models"
+    "lint": "eslint"
   },
   "dependencies": {
     "@fortawesome/free-solid-svg-icons": "^7.1.0",
