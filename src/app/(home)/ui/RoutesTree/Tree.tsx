@@ -8,7 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 const TreeNodeComponent: React.FC<{
   node: TreeNode;
   level: number;
-  onToggleExpand?: (nodeId: string, isExpanded: boolean) => void;
+  onToggleExpand?: (nodeId: number, isExpanded: boolean) => void;
 }> = ({ node, level, onToggleExpand }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [children, setChildren] = useState<TreeNode[]>(node.children || []);
@@ -30,7 +30,7 @@ const TreeNodeComponent: React.FC<{
     if (newIsExpanded && !children.length && node.hasChildren && node.link) {
       try {
         const fetchedChildren = await fetchTreeNode(level, node.id);
-        setChildren(fetchedChildren || []);
+        setChildren((fetchedChildren || []) as TreeNode[]);
       } catch (error) {
         console.error('Ошибка загрузки данных node:', error);
       }
@@ -102,7 +102,7 @@ const RecursiveTree: React.FC<RecursiveTreeProps> = ({
   // Helper function to update nodes recursively
     const updateNodeInTree = (
     nodes: TreeNode[],
-    nodeId: string,
+    nodeId: number,
     updates: Partial<TreeNode>
   ): TreeNode[] => {
     return nodes.map((node) => {
@@ -119,7 +119,7 @@ const RecursiveTree: React.FC<RecursiveTreeProps> = ({
     });
   };
 
-  const handleToggleExpand = useCallback((nodeId: string, isExpanded: boolean) => {
+  const handleToggleExpand = useCallback((nodeId: number, isExpanded: boolean) => {
     setNodes((prev) =>
       updateNodeInTree(prev, nodeId, { isExpanded })
     );

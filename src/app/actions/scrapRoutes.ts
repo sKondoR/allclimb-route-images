@@ -108,7 +108,7 @@ export async function scrapRoutes() {
 
           try {
             const { data } = await getApiResponse(`${ALLCLIMB_URL}${place.link}`);
-            const placeSectors = prepareSectors(data, place.id!, place.uniqId);
+            const placeSectors = prepareSectors(data, place.id, place.uniqId);
             loadedSectors.push(...placeSectors);
             console.log('загрузка мест, секторов: ', loadedSectors.length);
           } catch (err) {
@@ -138,9 +138,9 @@ export async function scrapRoutes() {
 
           try {
             const { data } = await getApiResponse(`${ALLCLIMB_URL}${sector.link}`);
-            const sectorRoutes = prepareRoutes(data, sector.id!, sector.uniqId);
+            let sectorRoutes = prepareRoutes(data, sector.id, sector.uniqId);
+            sectorRoutes = await db.insert(routes).values(sectorRoutes).returning();
             loadedRoutes.push(...sectorRoutes);
-            await db.insert(routes).values(sectorRoutes);
           } catch (err) {
             fetchErrors.sectors.push(sector.name);
           }
