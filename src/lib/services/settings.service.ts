@@ -10,36 +10,30 @@ export class SettingsService {
       .orderBy(asc(settings.id));
   }
 
-  static async updateScrapStats(stats: IScrapStats): Promise<undefined> {    
+  static async updateScrapStats(stats: IScrapStats): Promise<void> {    
     const result = await db.select().from(settings).limit(1).execute();
     const currentSettings = result[0];
 
-    let newScrapStats: IScrapStats;
+    const currentMaxRoutes = currentSettings?.scrapStats?.routes || 0;
+    const newSuccessfulRoutes = stats.routes;
+    const maxRoutes = Math.max(currentMaxRoutes, newSuccessfulRoutes);
+    const routesErrors = maxRoutes - newSuccessfulRoutes;
+
+    const newScrapStats: IScrapStats = {
+      ...stats,
+      routes: maxRoutes,
+      routesErrors,
+    };
 
     if (!currentSettings) {
-      newScrapStats = {
-        ...stats,
-        routesErrors: 0,
-      };
       await db.insert(settings).values({
         scrapStats: newScrapStats,
       }).execute();
     } else {
-      const previousRoutes = currentSettings.scrapStats?.routes || 0;
-      const maxRoutes = Math.max(stats.routes, previousRoutes);
-      
-      newScrapStats = {
-        ...stats,
-        routes: maxRoutes,
-        routesErrors: maxRoutes - stats.routes,
-      };
-
       await db.update(settings)
         .set({ scrapStats: newScrapStats })
         .where(eq(settings.id, currentSettings.id))
         .execute();
-
-      return;
     }
   }
 }
