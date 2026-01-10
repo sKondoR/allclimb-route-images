@@ -1,12 +1,13 @@
 'use server';
 import { ALLCLIMB_URL } from '@/shared/constants/allclimb';
 import { chromium as plChromium } from 'playwright';
-import chromium from '@sparticuz/chromium';
 import { removeLastUrlSegment } from '@/shared/utils/removeLastUrlSegment';
 import { ImagesService } from '@/lib/services/images.service';
 
 import { db } from '@/lib/db';
 import { images, type IImage, type IRoute } from '@/lib/db/schema';
+
+const chromium = require('@sparticuz/chromium');
 
 export async function scrapRouteImage(route: IRoute): Promise<IImage> {
   let browser;
