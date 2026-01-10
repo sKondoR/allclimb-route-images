@@ -1,18 +1,7 @@
 'use client'
 
 import useGlobalTime from '@/shared/hooks/useGlobalTime';
-import ClientOnly from '@/shared/ui/ClientOnly';
-import { Geist, Geist_Mono } from 'next/font/google';
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+import { ClientOnly } from '@/shared/ui/ClientOnly';
 
 export default function AnimatedBg() {
   const globalTime = useGlobalTime();
@@ -21,11 +10,11 @@ export default function AnimatedBg() {
   
   return (
     <ClientOnly>
-    <div
-      className="fixed h-screen inset-0 -z-2 bg-animated-gradient"
-      style={{
-          animationDelay: `-${delay}s`,
-      }}
-    ></div>
+      <div
+        className="fixed h-screen inset-0 -z-2 bg-animated-gradient"
+        style={{
+            animationDelay: `-${delay}s`,
+        }}
+      ></div>
   </ClientOnly>);
 }

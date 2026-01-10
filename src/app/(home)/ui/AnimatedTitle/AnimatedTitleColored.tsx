@@ -1,7 +1,7 @@
 'use client'
 
 import useGlobalTime from '@/shared/hooks/useGlobalTime';
-import ClientOnly from '@/shared/ui/ClientOnly';
+import { ClientOnly } from '@/shared/ui/ClientOnly';
 
 export default function AnimatedTitleColored({
   children,
@@ -16,8 +16,8 @@ export default function AnimatedTitleColored({
     <ClientOnly  // hidden md:block
       className="absolute overflow-hidden 
 
-        left-[28px] top-[38px]
-        width-[calc(100% - 28px)] height-[calc(100% - 38px)]
+        left-[0] top-[38px]
+        width-full height-[calc(100% - 38px)]
 
         md:left-[89px] md:top-[77px]
         md:width-[calc(100% - 89px)] md:height-[calc(100% - 77px)]
@@ -34,7 +34,7 @@ export default function AnimatedTitleColored({
               text-3xl md:text-6xl
               24px
 
-              ml-[-28px] mt-[-38px]
+              ml-[0] mt-[-38px]
 
               md:ml-[-89px] md:mt-[-77px]
           `}

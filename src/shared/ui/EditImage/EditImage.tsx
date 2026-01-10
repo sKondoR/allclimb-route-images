@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDownload } from '@fortawesome/free-solid-svg-icons';
-import FontSizeControl from '../FontSizeControl/FontSizeControl';
+import { FontSizeControl } from '../FontSizeControl';
 
-export type EditImageProps = {
+type EditImageProps = {
     imgSrc: string,
     name: string,
     region?: string,
@@ -36,9 +36,23 @@ const EditImage = ({
     const img = new Image();
 
     img.onload = () => {
-      // Устанавливаем размеры canvas под изображение
-      canvas.width = img.width;
-      canvas.height = img.height;
+      // Получаем размеры изображения
+    let width = img.width;
+    let height = img.height;
+
+    // Получаем доступный размер контейнера
+    const maxWidth = canvas.parentElement?.clientWidth || window.innerWidth;
+
+    // Масштабируем, если изображение шире контейнера
+    if (width > maxWidth) {
+      const scaleFactor = maxWidth / width;
+      width *= scaleFactor;
+      height *= scaleFactor;
+    }
+
+    // Устанавливаем размеры canvas (это физические пиксели)
+    canvas.width = width;
+    canvas.height = height;
 
       // Очищаем и рисуем фон
       ctx.clearRect(0, 0, canvas.width, canvas.height);

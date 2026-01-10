@@ -14,7 +14,7 @@ export default function AnimatedTitle({
           text-3xl md:text-6xl
           absolute z-10
 
-          left-[-28px] top-[-2px]
+          left-[10px] top-[-2px]
 
           md:left-[-89px] md:top-[-24px]
         `}

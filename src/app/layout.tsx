@@ -46,7 +46,7 @@ export default function RootLayout({
             <div className="absolute bottom-20 left-1/4 w-20 h-20 rounded-full bg-white/10 ipulse" style={{ animationDelay: '5s' }}></div>
             <div className="absolute top-1/4 right-20 w-12 h-12 rounded-full bg-white/10 ipulse" style={{ animationDelay: '8s' }}></div>
         </div>
-        <div className="w-full mins-w-screen grow p-3 pl-10 md:p-15 relative z-10">
+        <div className="w-full mins-w-screen grow p-3 md:p-15 relative z-10">
           {children}
         </div>
         <ScrapStats />

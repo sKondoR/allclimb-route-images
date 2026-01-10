@@ -8,7 +8,7 @@ import { RouteBadge } from '@/shared/ui/RouteBadge';
 import { getBeforeLastSlash } from '@/shared/utils/getBeforeLastSlash';
 import { getRegionFromRouteUniqId } from '@/shared/utils/getRegionFromRouteUniqId';
 import { scrapRouteImage } from '@/app/actions/scrapRouteImage';
-import EditImage from '@/shared/ui/EditImage/EditImage';
+import { EditImage } from '@/shared/ui/EditImage';
 import type { IImage, IRoute } from '@/lib/db/schema';
 
 export default function RoutePageContent({ route }: { route: IRoute }) {
@@ -27,7 +27,7 @@ export default function RoutePageContent({ route }: { route: IRoute }) {
   if (!route) {
     return (<div className="mt-3">
       <PageDescription>
-          <h2 className="text-3xl text-pink-700">'трасса не найденна'</h2>
+          <h2 className="text-2xl md:text-3xl text-pink-700">'трасса не найденна'</h2>
       </PageDescription>
     </div>);
   }
@@ -37,7 +37,7 @@ export default function RoutePageContent({ route }: { route: IRoute }) {
         <PageDescription>
           {route?.grade ? <RouteBadge grade={route.grade} /> : null}
           <div className="grow ml-3">
-            <h2 className="text-3xl text-pink-700">{route?.name}</h2>
+            <h2 className="text-2xl md:text-3xl text-pink-700">{route?.name}</h2>
             <div>{getBeforeLastSlash(route?.uniqId)}</div>
           </div>
         </PageDescription>

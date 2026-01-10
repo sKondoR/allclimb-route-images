@@ -1,6 +1,6 @@
 'use client'
 
-export type FontSizeControlProps = {
+type FontSizeControlProps = {
     value: number;
     defaultValue: number;
     onChange: (newValue: number) => void;
