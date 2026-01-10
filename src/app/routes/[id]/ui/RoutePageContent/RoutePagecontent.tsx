@@ -15,13 +15,23 @@ export default function RoutePageContent({ route }: { route: IRoute }) {
 
   const [image, setImage] = useState<IImage | null>(null);
 
-  useEffect(() => {
-    async function load() {
-      if (!route) return;
-      const img = await scrapRouteImage(route);
+  const loadImage = async (isUpdate: boolean) => {
+    try {
+      const img = await scrapRouteImage(route, isUpdate);
       setImage(img);
+    } catch (error) {
+      console.error('Ошибка загрузки изображения:', error);
     }
-    load();
+  }
+
+  const reloadImage = () => {
+    setImage(null);
+    loadImage(true);
+  }
+
+  useEffect(() => {
+    if (!route) return;
+    loadImage(false);
   }, [route]);
 
   if (!route) {
@@ -58,6 +68,15 @@ export default function RoutePageContent({ route }: { route: IRoute }) {
               />
             </div>
           : image?.error}
+        </div>
+        <div className="flex justify-center mt-3">
+          <button
+            type="button"
+            className="rounded-md bg-cyan-700 px-7 py-2 text-white transition-colors hover:bg-cyan-800 focus:outline-none cursor-pointer"
+            onClick={reloadImage}
+          >
+            перезагрузить изображение
+          </button>
         </div>
       </div>
     </>

@@ -46,7 +46,7 @@ export default function SearchTabs() {
               ${selectedIndex === 0 ? 'bg-white/60 backdrop-blur-md text-pink-700' : 'bg-transparent text-white hover:bg-white/30'}
             `}
           >
-            <FontAwesomeIcon icon={faMagnifyingGlass} /> по названию
+            <FontAwesomeIcon icon={faMagnifyingGlass} /><span className="hidden md:inline"> по названию</span>
           </Tab>
           <Tab
             key="по региону"
@@ -54,7 +54,7 @@ export default function SearchTabs() {
               ${selectedIndex !== 0 ? 'bg-white/60 backdrop-blur-md text-pink-700' : 'bg-transparent text-white hover:bg-white/30'}
             `}
           >
-            <FontAwesomeIcon icon={faFolderTree} /> по региону
+            <FontAwesomeIcon icon={faFolderTree} /><span className="hidden md:inline"> по региону</span>
           </Tab>
         </TabList>
       </TabGroup>

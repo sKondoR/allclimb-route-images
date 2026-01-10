@@ -10,15 +10,18 @@ import { images, type IImage, type IRoute } from '@/lib/db/schema';
 // require важно на vercel 
 const chromium = require('@sparticuz/chromium');
 
-export async function scrapRouteImage(route: IRoute): Promise<IImage> {
+export async function scrapRouteImage(route: IRoute, isUpdate: boolean): Promise<IImage> {
   let browser;
   let context;
  
 try {
-    // Проверяем, есть ли уже изображение
-    const existedImage = await ImagesService.findOne(route.uniqId);
-    if (existedImage?.imageData) {
-      return existedImage;
+
+    if (!isUpdate) {
+      // Проверяем, есть ли уже изображение
+      const existedImage = await ImagesService.findOne(route.uniqId);
+      if (existedImage?.imageData) {
+        return existedImage;
+      }      
     }
 
     const executablePath = process.env.VERCEL

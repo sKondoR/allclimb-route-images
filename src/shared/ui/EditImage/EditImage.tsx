@@ -36,23 +36,9 @@ const EditImage = ({
     const img = new Image();
 
     img.onload = () => {
-      // Получаем размеры изображения
-    let width = img.width;
-    let height = img.height;
-
-    // Получаем доступный размер контейнера
-    const maxWidth = canvas.parentElement?.clientWidth || window.innerWidth;
-
-    // Масштабируем, если изображение шире контейнера
-    if (width > maxWidth) {
-      const scaleFactor = maxWidth / width;
-      width *= scaleFactor;
-      height *= scaleFactor;
-    }
-
-    // Устанавливаем размеры canvas (это физические пиксели)
-    canvas.width = width;
-    canvas.height = height;
+      // Устанавливаем размеры canvas под изображение
+      canvas.width = img.width;
+      canvas.height = img.height;
 
       // Очищаем и рисуем фон
       ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -107,7 +93,7 @@ const EditImage = ({
 
   return (
     <>
-    <div className="flex justify-center mb-3 mt-1 items-center" >
+    <div className="flex flex-wrap justify-center mb-3 mt-1 items-center" >
         <div className="mr-5" >
             <input
                 type="text"
@@ -161,7 +147,7 @@ const EditImage = ({
             aria-label={`скачать изображение`}
         />
       </div>
-      <div className="flex justify-center">
+      <div className="flex justify-center overflow-scroll">
         <canvas
             ref={canvasRef}
             style={{ maxWidth: '100%', height: 'auto', display: 'block' }}

@@ -2,8 +2,9 @@
 
 import React, { useState, useCallback, useEffect } from 'react';
 import { fetchTreeNode } from '@/app/actions/fetchTreeNode';
-import { faCaretDown, faCaretRight, faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { faCaretDown, faCaretRight, faSpinner, faExternalLink } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { ALLCLIMB_URL } from '@/shared/constants/allclimb';
 
 const TreeNodeComponent: React.FC<{
   node: TreeNode;
@@ -44,9 +45,9 @@ const TreeNodeComponent: React.FC<{
   return (
     <div className="tree-node">
       <div
-        className="flex cursor-pointer"
+        className="flex cursor-pointer items-start"
         style={{ 
-          paddingLeft: `${(level + 1)* 24}px`,
+          paddingLeft: `${level* 24}px`,
         }}
       >
         {hasChildren && level < 3 && (
@@ -59,7 +60,7 @@ const TreeNodeComponent: React.FC<{
             {isLoading ? (
               <FontAwesomeIcon icon={faSpinner} className="animate-spin text-gray-800" />
             ) : (
-              <FontAwesomeIcon icon={isExpanded ? faCaretDown : faCaretRight} />
+              <FontAwesomeIcon className="text-blue-800 hover:text-orange-800" icon={isExpanded ? faCaretDown : faCaretRight} />
             )}
           </button>
         )}
@@ -70,11 +71,19 @@ const TreeNodeComponent: React.FC<{
         
         <span>
           {node.country && `${node.country} - `}
-          {node.link
-            ? <a href={`${node.link}`} className="text-blue-800 hover:text-orange-800">{node.name}</a> 
-            : node.name
-          }
-          {node.numroutes !== undefined && <span className="text-gray-500 text-sm ml-3">({node.numroutes})</span>}
+          {level < 3
+            ? <>
+              {node.name} 
+              {node.numroutes !== undefined ? <span className="text-gray-500 text-sm ml-2">({node.numroutes})</span> : null}
+              {node.link 
+              ? <a href={`${ALLCLIMB_URL}${node.link}`} className="ml-2 text-blue-800 hover:text-orange-800" target="_blank">
+                  <FontAwesomeIcon icon={faExternalLink} />
+                </a> : null}
+              </>
+            : <a href={`routes/${node.id}`} className="text-blue-800 hover:text-orange-800">
+                {node.name}
+              </a>
+            }
         </span>
       </div>
       

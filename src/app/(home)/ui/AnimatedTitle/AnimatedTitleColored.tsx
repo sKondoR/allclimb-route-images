@@ -32,7 +32,6 @@ export default function AnimatedTitleColored({
               font-bold bg-clip-text text-transparent
               bg-cover bg-center bg-animated-gradient
               text-3xl md:text-6xl
-              24px
 
               ml-[0] mt-[-38px]
 
