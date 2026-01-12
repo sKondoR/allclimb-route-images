@@ -50,6 +50,7 @@ export default function RoutePageContent({ route }: { route: IRoute }) {
           <div className="grow ml-3">
             <h2 className="inline text-2xl md:text-3xl text-pink-700">{route?.name}</h2> {route?.type?.toLowerCase()} <AllclimbLink href={route.sectorLink} />
             <div>{getBeforeLastSlash(route?.uniqId)}</div>
+            <div>{route?.length}</div>
           </div>
         </PageDescription>
         <div className="flex justify-center">

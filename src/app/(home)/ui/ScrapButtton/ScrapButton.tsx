@@ -11,7 +11,7 @@ export default function ScrapButton() {
   return (
     <button
         type="button"
-        className="rounded-md px-7 py-2 text-white transition-colors hover:bg-cyan-800/80 focus:outline-none cursor-pointer mb-3 border-2 border-white"
+        className="rounded-md px-7 py-2 text-white transition-colors hover:bg-cyan-800/80 focus:outline-none cursor-pointer mb-3 border-2 border-white relative z-50"
         onClick={handleScrap}
         // disabled
     >

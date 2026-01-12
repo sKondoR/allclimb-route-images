@@ -91,7 +91,7 @@ export const prepareSectors = (data: { result?: any[]; }, id: number, uniqId: st
           author: r.author,
           bolts: r.bolts,
           type: removeTags(r.type),
-          length: removeTags(r.bolts),
+          length: removeTags(r.length),
           top: removeTags(r.top),
         }
         if (existingIndex === -1) {
