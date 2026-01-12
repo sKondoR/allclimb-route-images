@@ -100,6 +100,15 @@ try {
         timeout: 10000,
       });
 
+      // стили для скрытия скроллбаров
+      await page.addStyleTag({
+        content: `
+          * { scrollbar-width: none !important; }
+          *::-webkit-scrollbar { display: none !important; }
+          html, body { overflow: hidden !important; }
+        `,
+      });
+
       // Наведение на элемент
       await page
         .locator('.items-preview')
@@ -107,7 +116,7 @@ try {
         .first()
         .hover();
       // иногда ховер не успевает сработать без ожидания
-      await page.waitForTimeout(3000);
+      await page.waitForTimeout(1000);
 
       const format = imageUrl.includes('.jpg') ? '.jpg' : '.jpeg';
       const imgLocator = page.locator(`img[src*="${imageUrl.split(format)[0]}${format}"]`);
