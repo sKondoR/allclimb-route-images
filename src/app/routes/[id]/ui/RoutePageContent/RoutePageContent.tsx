@@ -38,7 +38,7 @@ export default function RoutePageContent({ route }: { route: IRoute }) {
   if (!route) {
     return (<div className="mt-3">
       <PageDescription>
-          <h2 className="text-2xl md:text-3xl text-pink-700">трасса не найденна</h2>
+          <h2 className="text-2xl md:text-3xl text-pink-700">трасса не найдена</h2>
       </PageDescription>
     </div>);
   }
