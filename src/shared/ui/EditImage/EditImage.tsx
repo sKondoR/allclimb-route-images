@@ -54,7 +54,7 @@ const EditImage = ({
       // Параметры позиционирования
       const lineHeight = fontSize + 10;
       const regionLineHeight = fontSizeRegion + 10;  
-      const startY = p.isTop ? (lineHeight + (text ? 2 : 1) * lineHeight) : (canvas.height - regionLineHeight) + 10;
+      const startY = p.isTop ? ((text ? 2 : 1) * lineHeight + regionLineHeight) : (canvas.height - regionLineHeight) + 10;
       const startX = p.isRight ? canvas.width - 30 : 30;
       ctx.textAlign = p.isRight ? 'right' : 'left';
 
