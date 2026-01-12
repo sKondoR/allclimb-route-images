@@ -24,7 +24,6 @@ export default function TreeTest() {
         }),
       });
       const { data } = await res.json();
-      console.log('data', data);
       setRegions(data);
     }
     load();
@@ -41,8 +40,6 @@ export default function TreeTest() {
     country: region.country,
     hasChildren: !!region.link,
   })) as TreeNode[];
-
-  console.log('initialTreeData', initialTreeData);
 
   return (
     <>

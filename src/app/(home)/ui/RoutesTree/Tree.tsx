@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useCallback, useEffect } from 'react';
+import Link from 'next/link';
 import { fetchTreeNode } from '@/app/actions/fetchTreeNode';
 import { faCaretDown, faCaretRight, faSpinner, faExternalLink } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -80,9 +81,7 @@ const TreeNodeComponent: React.FC<{
                   <FontAwesomeIcon icon={faExternalLink} />
                 </a> : null}
               </>
-            : <a href={`routes/${node.id}`} className="text-blue-800 hover:text-orange-800">
-                {node.name}
-              </a>
+            : <Link href={`/routes/${node.id}`} className="text-blue-800 hover:text-orange-800">{node.name}</Link>
             }
         </span>
       </div>

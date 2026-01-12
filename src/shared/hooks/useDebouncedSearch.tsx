@@ -20,7 +20,6 @@ export function useDebouncedSearch(apiFunction: (query: string, options?: any) =
       clearTimeout(timeoutRef.current);
     }
 
-     console.log('>0 true ', query)
     setLoading(true);
     setError(null);
 
@@ -30,7 +29,6 @@ export function useDebouncedSearch(apiFunction: (query: string, options?: any) =
 
     if (!query || query.trim().length < 3) {
       setResults(initSearchValue);
-      console.log('>1 false ', query)
       setLoading(false);
       return;
     }
@@ -49,11 +47,9 @@ export function useDebouncedSearch(apiFunction: (query: string, options?: any) =
           if (err.name !== 'AbortError') {
             setError(err.message);
             setLoading(false);
-            console.error('Search error:', err);
           }
         } else {
           setError('An unexpected error occurred');
-          console.error('Unknown error:', err);
         }
       } finally {
       }

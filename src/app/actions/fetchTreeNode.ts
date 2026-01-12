@@ -38,7 +38,6 @@ export async function fetchTreeNode(level: number, parentId?: number): Promise<T
     numroutes: 'numroutes' in el ? el.numroutes : undefined,
     hasChildren: !!el.link,
   }));
-  console.log('fetchTreeNode result: ', preparedData?.[0]);
   return preparedData;
 }
 
