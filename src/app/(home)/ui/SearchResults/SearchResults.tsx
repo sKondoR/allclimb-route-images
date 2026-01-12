@@ -23,7 +23,7 @@ export default function SearchResults({ results }: { results: FoundResults }) {
                       <div className="grow">
                         <a href={`/routes/${route.id}`} className="cursor-pointer text-cyan-700 hover:text-pink-700">{route.name}</a>
                       </div>
-                      <AllclimbLink href={`${ALLCLIMB_URL}/${route.sectorLink}`}/>
+                      <AllclimbLink href={route.sectorLink} />
                     </div>
                     <div className="text-xs text-gray-500">{getBeforeLastSlash(route.uniqId)}</div>
                 </li>
@@ -45,7 +45,7 @@ export default function SearchResults({ results }: { results: FoundResults }) {
                       <div className="grow">
                         {place.name}
                       </div>
-                      <AllclimbLink href={`${ALLCLIMB_URL}/${place.link}`}/>
+                      <AllclimbLink href={place.link} />
                     </div>
                     <div className="text-xs text-gray-500">{getBeforeLastSlash(place.uniqId)}</div>
                 </li>
@@ -66,7 +66,7 @@ export default function SearchResults({ results }: { results: FoundResults }) {
                       <div className="grow">
                         {sector.name}
                       </div>
-                      <AllclimbLink href={`${ALLCLIMB_URL}/${sector.link}`}/>
+                      <AllclimbLink href={sector.link}/>
                     </div>
                     <div className="text-xs text-gray-500">{getBeforeLastSlash(sector.uniqId)}</div>
                 </li>

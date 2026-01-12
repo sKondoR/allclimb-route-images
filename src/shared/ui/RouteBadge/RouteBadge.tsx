@@ -5,7 +5,7 @@ type IRouteBadge = {
 };
 
 const RouteBadge = ({
-  grade, 
+  grade,
 }: IRouteBadge) => {
   const formattedGrade = grade.toLowerCase();
   const bg = GRADES_COLORS[formattedGrade.slice(0, 2)];

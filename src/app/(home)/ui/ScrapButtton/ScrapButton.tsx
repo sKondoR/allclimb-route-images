@@ -11,16 +11,11 @@ export default function ScrapButton() {
   return (
     <button
         type="button"
-        className={`w-full cursor-pointer rounded-md px-4 py-2 transition-colors
-            text-white bg-blue-600 hover:bg-blue-700
-            focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2
-            disabled:bg-gray-400 disabled:text-gray-200 disabled:cursor-not-allowed
-            `
-        }
+        className="rounded-md px-7 py-2 text-white transition-colors hover:bg-cyan-800/80 focus:outline-none cursor-pointer mb-3 border-2 border-white"
         onClick={handleScrap}
         // disabled
     >
-        скачать данные с Allclimb
+        обновить данные с Allclimb
     </button>
   );
 }

@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useState } from 'react';
-import ScrapButton from '../ScrapButtton/ScrapButton';
 import RecursiveTree from './Tree';
 import type { IRegion } from '@/lib/db/schema';
 
@@ -28,11 +27,7 @@ export default function TreeTest() {
     }
     load();
   }, [regions.length]);
-
-  if (!regions?.length) {
-    return <ScrapButton />;
-  }
-
+  
   const initialTreeData = regions.map((region) => ({
     id: region.id,
     name: region.name,
@@ -43,9 +38,6 @@ export default function TreeTest() {
 
   return (
     <>
-      <div className="mb-5">
-        <ScrapButton />
-      </div>
       <RecursiveTree 
         initialData={initialTreeData}
       />

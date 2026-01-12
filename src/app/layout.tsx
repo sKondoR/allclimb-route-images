@@ -4,6 +4,7 @@ import './globals.css';
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import { AnimatedBg } from './ui/AnimatedBg';
 import { ScrapStats } from '@/shared/ui/ScrapStats';
+import ScrapButton from './(home)/ui/ScrapButtton/ScrapButton';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -50,6 +51,7 @@ export default function RootLayout({
           {children}
         </div>
         <ScrapStats />
+        {process.env.NODE_ENV === 'development' && (<ScrapButton />)}
       </body>
     </html>
   );

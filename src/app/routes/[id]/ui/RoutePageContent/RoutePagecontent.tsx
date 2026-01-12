@@ -10,6 +10,7 @@ import { getRegionFromRouteUniqId } from '@/shared/utils/getRegionFromRouteUniqI
 import { scrapRouteImage } from '@/app/actions/scrapRouteImage';
 import { EditImage } from '@/shared/ui/EditImage';
 import type { IImage, IRoute } from '@/lib/db/schema';
+import { AllclimbLink } from '@/shared/ui/AllclimbLink';
 
 export default function RoutePageContent({ route }: { route: IRoute }) {
 
@@ -37,7 +38,7 @@ export default function RoutePageContent({ route }: { route: IRoute }) {
   if (!route) {
     return (<div className="mt-3">
       <PageDescription>
-          <h2 className="text-2xl md:text-3xl text-pink-700">'трасса не найденна'</h2>
+          <h2 className="text-2xl md:text-3xl text-pink-700">трасса не найденна</h2>
       </PageDescription>
     </div>);
   }
@@ -47,7 +48,7 @@ export default function RoutePageContent({ route }: { route: IRoute }) {
         <PageDescription>
           {route?.grade ? <div><RouteBadge grade={route.grade} /></div> : null}
           <div className="grow ml-3">
-            <h2 className="text-2xl md:text-3xl text-pink-700">{route?.name}</h2>
+            <h2 className="inline text-2xl md:text-3xl text-pink-700">{route?.name}</h2> {route?.type?.toLowerCase()} <AllclimbLink href={route.sectorLink} />
             <div>{getBeforeLastSlash(route?.uniqId)}</div>
           </div>
         </PageDescription>
@@ -72,7 +73,7 @@ export default function RoutePageContent({ route }: { route: IRoute }) {
         {image?.imageData ? <div className="flex justify-center mt-3">
           <button
             type="button"
-            className="rounded-md bg-cyan-700 px-7 py-2 text-white transition-colors hover:bg-cyan-800 focus:outline-none cursor-pointer"
+            className="rounded-md px-7 py-2 font-bold bg-cyan-800 text-white hover:text-white transition-colors hover:bg-pink-800 focus:outline-none cursor-pointer"
             onClick={reloadImage}
           >
             обновить изображение

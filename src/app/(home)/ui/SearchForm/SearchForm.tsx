@@ -57,9 +57,9 @@ export default function SearchForm() {
 
         <button
           type="submit"
-          className="rounded-md bg-cyan-700 px-7 py-2 text-white transition-colors hover:bg-cyan-800 focus:outline-none"
+          className="rounded-md px-7 py-2 font-bold bg-cyan-800 text-white hover:text-white transition-colors hover:bg-pink-800 focus:outline-none cursor-pointer"
         >
-          поиск
+          искать
         </button>
       </form>
       <SearchResults results={results} />
