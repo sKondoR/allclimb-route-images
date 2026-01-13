@@ -1,5 +1,5 @@
 import { drizzle } from 'drizzle-orm/vercel-postgres';
-import { VercelPool } from '@vercel/postgres';
+import { createPool } from '@vercel/postgres';
 import * as schema from './schema';
 
 const connectionString = process.env.POSTGRES_URL;
@@ -8,7 +8,11 @@ console.log('connectionString', process.env.POSTGRES_URL);
 if (!connectionString) {
   throw new Error('POSTGRES_URL is required');
 }
-const pool = new VercelPool({ connectionString });
+const pool = createPool({
+  connectionString,
+  max: 10,
+  // idleTimeoutMillis: 60000,
+});
 
 async function testConnection() {
   try {

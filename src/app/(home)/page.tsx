@@ -6,10 +6,17 @@ import { PageDescription } from '../ui/PageDescription';
 import { Suspense } from 'react';
 import { RegionsService } from '@/lib/services/regions.service';
 
+let regionsPromise: Promise<any> | null = null;
+
 export default async function Home(
   { searchParams }: { searchParams: { search?: string } }
 ) {
-  const regions = await RegionsService.find();
+
+  if (!regionsPromise) {
+    regionsPromise = RegionsService.find();
+  }
+
+  const regions = await regionsPromise;
   const { search } = await searchParams;
   const isFirstTab = !search || search === SEARCH_TABS[0];
   return (

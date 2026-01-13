@@ -14,7 +14,7 @@ export const useSearch = (searchTerm: string, debounceMs = 1000) => {
     return () => clearTimeout(timer);
   }, [searchTerm, debounceMs]);
 
-  return useQuery({
+  const query = useQuery({
     queryKey: ['search', debouncedTerm],
     queryFn: async ({ signal }): Promise<FoundResults> => {
       if (!debouncedTerm) return initialSearchResults;
@@ -30,4 +30,8 @@ export const useSearch = (searchTerm: string, debounceMs = 1000) => {
     staleTime: 1000 * 10,
     gcTime: 1000 * 60 * 5,
   });
+  return {
+    query,
+    term: debouncedTerm,
+  }
 };

@@ -10,7 +10,7 @@ import { useSearch } from '@/shared/hooks/useSearch';
 export default function SearchForm() {
   const [query, setQuery] = useState('');
 
-  const { data: results, isLoading, isError } = useSearch(query);
+  const { query: { data: results, isLoading, isError }, term } = useSearch(query);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -21,7 +21,9 @@ export default function SearchForm() {
     setQuery(value);
   };
 
-  const isNoResults =query?.trim().length >= 3
+  const isNoResults = term?.trim().length >= 3
+    && term.trim() === query.trim()
+    && !isError
     && !isLoading
     && !results?.places.length
     && !results?.sectors.length
@@ -53,8 +55,9 @@ export default function SearchForm() {
           искать
         </button>
       </form>
-      {!isNoResults && results ? <SearchResults results={results} /> : <div className="text-red-800">по "{query.trim()}" ничего не найденно</div>}
-      {isError ? <div className="text-red-800">ошибка при поиске</div> : null}
+      {results ? <SearchResults results={results} /> : null} 
+      {isNoResults ? <div className="text-red-800 mt-1 text-sm">по "{query.trim()}" ничего не найдено</div> : null}
+      {isError ? <div className="text-red-800 mt-1 text-sm">ошибка при поиске</div> : null}
     </>
   );
 }
