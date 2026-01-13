@@ -1,5 +1,6 @@
 import Link from "next/link";
 import AnimatedTitleColored from "./AnimatedTitleColored";
+import { HOME } from "@/shared/constants/allclimb.constants";
 
 export default function AnimatedTitle({
   children,
@@ -8,7 +9,7 @@ export default function AnimatedTitle({
 }>) {
   return (
       <Link
-        href="/"
+        href={HOME}
         className={`
           font-mono font-bold text-white leading-[0.8]
           bg-cover bg-center

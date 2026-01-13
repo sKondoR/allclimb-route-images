@@ -5,6 +5,7 @@ import { HeaderPanel } from "@/shared/ui/HeaderPanel";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHome } from "@fortawesome/free-solid-svg-icons";
 import Link from 'next/link';
+import { HOME } from "@/shared/constants/allclimb.constants";
 
 export const metadata: Metadata = {
   title: "Отметь Allclimb трассу",
@@ -20,7 +21,7 @@ export default function RoutesLayout({
     <div className="m-auto sm:w-full md:w-3/4 max-w-4xl relative">
       <AnimatedTitle>Отметь<br />Allclimb<br />трассу</AnimatedTitle>
       <HeaderPanel>
-        <Link href="/" className="ml-60 text-3xl text-white hover:text-pink-700">
+        <Link href={HOME} className="ml-50 md:ml-60 text-2xl md:text-3xl text-white hover:text-pink-700">
           <FontAwesomeIcon
               icon={faHome}     
           /> 
