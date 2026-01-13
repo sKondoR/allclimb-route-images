@@ -2,7 +2,7 @@
 
 import { useState } from 'react'; 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch, faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { faSearch, faSpinner, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { SearchResults } from '../SearchResults';
 import { useSearch } from '@/shared/hooks/useSearch';
 import { MIN_SEARCH_LENGTH } from '@/shared/constants/search.constants';
@@ -20,6 +20,10 @@ export default function SearchForm() {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setQuery(value);
+  };
+
+  const handleClearInput = () => {
+    setQuery('');
   };
 
   const isNoResults = term?.trim().length >= MIN_SEARCH_LENGTH
@@ -47,6 +51,14 @@ export default function SearchForm() {
             icon={isLoading ? faSpinner : faSearch}
             className={`absolute text-cyan-700 group-focus-within:text-pink-700 top-[12px] left-[12px] ${isLoading ? 'animate-spin' : ''}`}
           />
+            {query && (
+            <FontAwesomeIcon
+              size="lg"
+              icon={faTimes}
+              onClick={handleClearInput}
+              className="absolute text-pink-700 hover:text-pink-700 cursor-pointer top-[12px] right-[12px]"
+            />
+          )}
         </div>
 
         <button
