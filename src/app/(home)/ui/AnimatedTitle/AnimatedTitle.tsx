@@ -1,3 +1,4 @@
+import Link from "next/link";
 import AnimatedTitleColored from "./AnimatedTitleColored";
 
 export default function AnimatedTitle({
@@ -6,11 +7,12 @@ export default function AnimatedTitle({
   children: React.ReactNode;
 }>) {
   return (
-      <h1
+      <Link
+        href="/"
         className={`
           font-mono font-bold text-white leading-[0.8]
           bg-cover bg-center
-          text-transparent
+          text-transparent select-none
           text-3xl md:text-6xl
           absolute z-10
 
@@ -23,6 +25,6 @@ export default function AnimatedTitle({
           {children}
         </AnimatedTitleColored>
         {children}
-      </h1>
+      </Link>
   );
 }

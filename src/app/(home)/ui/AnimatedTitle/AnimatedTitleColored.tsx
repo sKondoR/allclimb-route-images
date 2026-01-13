@@ -13,8 +13,8 @@ export default function AnimatedTitleColored({
   const delay = (globalTime % animationDuration) / 1000;
   
   return (
-    <ClientOnly  // hidden md:block
-      className="absolute overflow-hidden 
+    <ClientOnly
+      className="absolute overflow-hidden select-none 
 
         left-[0] top-[38px]
         width-full height-[calc(100% - 38px)]
