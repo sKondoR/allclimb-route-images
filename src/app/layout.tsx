@@ -1,11 +1,13 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
+
 import './globals.css';
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import Providers from './providers';
-import { AnimatedBg } from './ui/AnimatedBg';
+
 import { ScrapStats } from '@/shared/ui/ScrapStats';
-import ScrapButton from './(home)/ui/ScrapButtton/ScrapButton';
+import { AnimatedBg } from '@/ui/layout/AnimatedBg';
+import { ScrapButton } from '@/ui/home/ScrapButtton';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

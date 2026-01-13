@@ -1,15 +1,17 @@
-import type { Metadata } from "next";
-import { Climber } from "../ui/Climber";
-import AnimatedTitle from "../(home)/ui/AnimatedTitle/AnimatedTitle";
-import { HeaderPanel } from "@/shared/ui/HeaderPanel";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHome } from "@fortawesome/free-solid-svg-icons";
+import type { Metadata } from 'next';
 import Link from 'next/link';
-import { HOME } from "@/shared/constants/allclimb.constants";
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHome } from '@fortawesome/free-solid-svg-icons';
+
+import { HOME } from '@/shared/constants/allclimb.constants';
+import { HeaderPanel } from '@/ui/layout/HeaderPanel';
+import { AnimatedTitle } from '@/ui/layout/AnimatedTitle';
+import { Climber } from '@/ui/layout/Climber';
 
 export const metadata: Metadata = {
-  title: "Отметь Allclimb трассу",
-  description: "Отметь Allclimb трассу",
+  title: 'Отметь Allclimb трассу',
+  description: 'Отметь Allclimb трассу',
 };
 
 export default function RoutesLayout({

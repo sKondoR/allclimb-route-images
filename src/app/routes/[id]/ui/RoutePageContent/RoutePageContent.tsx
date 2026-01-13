@@ -1,16 +1,19 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { PageDescription } from '@/app/ui/PageDescription';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
-import { RouteBadge } from '@/shared/ui/RouteBadge';
-import { getBeforeLastSlash } from '@/shared/utils/getBeforeLastSlash';
-import { getRegionFromRouteUniqId } from '@/shared/utils/getRegionFromRouteUniqId';
+
+import type { IImage, IRoute } from '@/lib/db/schema';
 import { scrapRouteImage } from '@/app/actions/scrapRouteImage';
 import { EditImage } from '@/shared/ui/EditImage';
-import type { IImage, IRoute } from '@/lib/db/schema';
+import { PageDescription } from '@/ui/layout/PageDescription';
+
+import { getBeforeLastSlash } from '@/shared/utils/getBeforeLastSlash';
+import { getRegionFromRouteUniqId } from '@/shared/utils/getRegionFromRouteUniqId';
 import { AllclimbLink } from '@/shared/ui/AllclimbLink';
+import { RouteBadge } from '@/shared/ui/RouteBadge';
 
 export default function RoutePageContent({ route }: { route: IRoute }) {
 

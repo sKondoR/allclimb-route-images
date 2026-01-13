@@ -1,10 +1,13 @@
 
-import { SearchForm } from './ui/SearchForm';
-import { SEARCH_TABS } from '@/shared/constants/allclimb.constants';
-import { RoutesTree } from './ui/RoutesTree';
-import { PageDescription } from '../ui/PageDescription';
+
 import { Suspense } from 'react';
+
 import { RegionsService } from '@/lib/services/regions.service';
+import { PageDescription } from '@/ui/layout/PageDescription';
+import { RoutesTree } from '@/ui/home/RoutesTree';
+import { SearchForm } from '@/ui/home/SearchForm';
+
+import { SEARCH_TABS } from '@/shared/constants/allclimb.constants';
 
 let regionsPromise: Promise<any> | null = null;
 

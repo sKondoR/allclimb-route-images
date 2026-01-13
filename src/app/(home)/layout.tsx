@@ -1,13 +1,14 @@
-import type { Metadata } from "next";
-import AnimatedTitle from "./ui/AnimatedTitle/AnimatedTitle";
-import { SearchTabs } from "./ui/SearchTabs";
-import { Climber } from "../ui/Climber";
-import { HeaderPanel } from "@/shared/ui/HeaderPanel";
-import { Suspense } from "react";
+import type { Metadata } from 'next';
+import { Suspense } from 'react';
+
+import { SearchTabs } from '@/ui/home/SearchTabs';
+import AnimatedTitle from '@/ui/layout/AnimatedTitle/AnimatedTitle';
+import { Climber } from '@/ui/layout/Climber';
+import { HeaderPanel } from '@/ui/layout/HeaderPanel';
 
 export const metadata: Metadata = {
-  title: "Поиск по имени трассы на Allclimb",
-  description: "Поиск по имени трассы на Allclimb",
+  title: 'Поиск по имени трассы на Allclimb',
+  description: 'Поиск по имени трассы на Allclimb',
 };
 
 export default function HomeLayout({

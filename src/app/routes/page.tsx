@@ -1,4 +1,5 @@
-import { PageDescription } from '@/app/ui/PageDescription';
+import { PageDescription } from "@/ui/layout/PageDescription";
+
 export default function RoutesPage() {
   return (
     <>
