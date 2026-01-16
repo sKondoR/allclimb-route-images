@@ -17,7 +17,6 @@
     "@headlessui/react": "^2.2.9",
     "@module-federation/nextjs-mf": "^8.8.51",
     "@next/bundle-analyzer": "^16.1.2",
-    "@nx/next": "^22.3.3",
     "@sparticuz/chromium": "^143.0.0",
     "@tanstack/react-query": "^5.90.16",
     "@tanstack/react-query-devtools": "^5.91.2",
@@ -36,7 +35,6 @@
     "typeorm": "^0.3.28"
   },
   "devDependencies": {
-    "@module-federation/enhanced": "^0.22.1",
     "@tailwindcss/postcss": "^4.1.18",
     "@types/node": "^20.19.27",
     "@types/react": "^19",
