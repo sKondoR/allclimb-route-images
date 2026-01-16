@@ -1,4 +1,4 @@
-# I Climbed
+# IClimbed
 
 🌐 [https://i-climbed.vercel.app/](https://i-climbed.vercel.app/)
 
