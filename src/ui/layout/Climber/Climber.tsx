@@ -3,7 +3,7 @@ import { useEffect, useRef } from 'react';
 export default function Climber() {
     const divRef = useRef<HTMLDivElement>(null);
     const ropeRef = useRef<HTMLDivElement>(null);
-    const svgRef = useRef<SVGSVGElement>(null);
+    const climberRef = useRef<SVGSVGElement>(null);
 
     const targetScrollY = useRef(0);
     const animationFrameId = useRef(0);
@@ -15,7 +15,7 @@ export default function Climber() {
         };
 
         const smoothScroll = () => {
-            if (!divRef.current || !ropeRef.current || !svgRef.current) return;
+            if (!divRef.current || !ropeRef.current || !climberRef.current) return;
 
             const offsetTop = 280;
             const speed = 0.8;
@@ -36,9 +36,13 @@ export default function Climber() {
             // === Добавляем горизонтальное смещение для SVG ===
             const swayRad = (swayDegrees * Math.PI) / 180;
             const offsetX = ropeLength * Math.sin(swayRad); // смещение нижней точки
+            ropeRef.current.style.transform = `rotate(${swayDegrees}deg)`;
 
             // Смещаем SVG относительно его текущего положения
-            svgRef.current.style.transform = `translateX(-${offsetX}px)`;
+            const swayClimberDegrees = Math.sin(scrollY / 100) * 10 - 2; // -12-8 градусов
+            climberRef.current.style.transformOrigin = '24px top';
+            climberRef.current.style.transformBox = 'fill-box';
+            climberRef.current.style.transform = `translateX(-${offsetX}px) rotate(${swayClimberDegrees}deg)`;
 
             animationFrameId.current = requestAnimationFrame(smoothScroll);
         };
@@ -65,7 +69,7 @@ export default function Climber() {
             <svg
                 width="301" height="357" viewBox="0 0 301 357" xmlns="http://www.w3.org/2000/svg"
                 className="w-20 h-20 fill-white"
-                ref={svgRef}
+                ref={climberRef}
                 style={{ willChange: 'transform' }}
             >
                 <path fillRule="evenodd" clipRule="evenodd"
