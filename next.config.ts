@@ -3,7 +3,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
-  turbopack: {},
+  // turbopack: {},
   serverExternalPackages: [
     'playwright-core',
     'playwright',
@@ -16,7 +16,7 @@ const nextConfig: NextConfig = {
       remotes: {
         // microfrontend: 'microfrontend@http://localhost:3001/_next/static/chunks/remoteEntry.js',
         // Продакшен (по необходимости):
-        microfrontend: 'microfrontend@https://edit-route-image-mf.vercel.app/_next/static/chunks/remoteEntry.js',
+        microfrontend: `microfrontend@https://edit-route-image-mf.vercel.app/_next/static/chunks/remoteEntry.js?__t=${Date.now()}`,
       },
       shared: {
         // react: {
@@ -37,11 +37,10 @@ const nextConfig: NextConfig = {
     });
 
     config.plugins.push(mfConfig);
-    config.externals.push(
-      'playwright-core',
-      'playwright',
-      '@sparticuz/chromium'
-    );
+    
+    // Keep externals
+    config.externals.push('playwright-core', 'playwright', '@sparticuz/chromium');
+
 
     // Настройка publicPath только на клиенте
     if (!context.isServer) {
