@@ -45,7 +45,7 @@ const RoutePage = ({
 RoutePage.getLayout = function getLayout(page: ReactElement) {
   return (
     <Layout>
-        <AnimatedTitle>Поиск<br />Allclimb<br />трасс</AnimatedTitle>
+        <AnimatedTitle>Отметь<br />Allclimb<br />трассу</AnimatedTitle>
         <HeaderPanel>
           <Link href={HOME} className="ml-50 md:ml-60 text-2xl md:text-3xl text-white hover:text-pink-700">
             <FontAwesomeIcon

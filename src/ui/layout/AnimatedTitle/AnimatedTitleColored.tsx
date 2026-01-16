@@ -19,8 +19,8 @@ export default function AnimatedTitleColored({
         left-[0] top-[38px]
         width-full height-[calc(100% - 38px)]
 
-        md:left-[89px] md:top-[77px]
-        md:width-[calc(100% - 89px)] md:height-[calc(100% - 77px)]
+        md:left-[82px] md:top-[77px]
+        md:width-[calc(100% - 82px)] md:height-[calc(100% - 77px)]
       "
       style={{ height: '77px' }}
     >
@@ -35,13 +35,13 @@ export default function AnimatedTitleColored({
 
               ml-[0] mt-[-38px]
 
-              md:ml-[-89px] md:mt-[-77px]
+              md:ml-[-82px] md:mt-[-77px]
           `}
           style={{
             animationDelay: `-${delay}s`,
             backgroundClip: 'text',
             WebkitBackgroundClip: 'text',
-            paddingBottom: '7px',
+            paddingBottom: '10px',
           }}
           suppressHydrationWarning
       >

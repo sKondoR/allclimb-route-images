@@ -19,7 +19,7 @@ export default function AnimatedTitle({
 
           left-[10px] top-[-2px]
 
-          md:left-[-89px] md:top-[-24px]
+          md:left-[-82px] md:top-[-24px]
         `}
       >
         <AnimatedTitleColored>
