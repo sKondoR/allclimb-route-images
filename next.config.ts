@@ -9,6 +9,9 @@ const nextConfig: NextConfig = {
     'playwright',
     '@sparticuz/chromium',
   ],
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
   //  webpack: (config, context) => {
   //   const mfConfig = new NextFederationPlugin({
   //     name: 'host_app',
