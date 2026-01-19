@@ -3,12 +3,18 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   headers: async () => {
+    const isProduction = process.env.NODE_ENV === 'production';
     return [
       // Глобальные безопасные заголовки
       {
         source: '/(.*)', // Применяется ко всем маршрутам
         headers: [
-          { key: 'Content-Security-Policy', value: "default-src 'self'; script-src 'self' https://i-climbed-card.vercel.app; connect-src 'self' https://i-climbed-card.vercel.app; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; frame-ancestors 'none';" },
+          {
+            key: 'Content-Security-Policy',
+            value: isProduction
+              ? "default-src 'self'; script-src 'self' https://i-climbed-card.vercel.app; connect-src 'self' https://i-climbed-card.vercel.app; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; frame-ancestors 'none'; object-src 'none'; base-uri 'self';"
+              : "default-src 'self'; script-src 'self' 'unsafe-eval' https://i-climbed-card.vercel.app; connect-src 'self' https://i-climbed-card.vercel.app; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; frame-ancestors 'none'; object-src 'none'; base-uri 'self';",
+          },
           { key: 'X-Frame-Options', value: 'DENY' },
           { key: 'X-Content-Type-Options', value: 'nosniff' },
           { key: 'Strict-Transport-Security', value: 'max-age=31536000; includeSubDomains; preload' },
