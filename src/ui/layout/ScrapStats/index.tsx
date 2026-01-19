@@ -35,13 +35,17 @@ export default function ScrapStats() {
     routes,
     routesErrors,
     scrapDate,
+    scrapDuration,
   } = latestStats;
 
   return (
     <div className="p-5 text-white/50 text-sm relative z-20">
       <div className="grid grid-cols-3 gap-y-1">
+        <div className="col-span-2 mr-2">обновление данных с Allclimb: </div>
         <div>{scrapDate}</div>
-        <div className="col-span-2">обновление данных с Allclimb</div>
+
+        <div className="col-span-2 mr-2">время загрузки: </div>
+        <div>{scrapDuration}</div>
 
         <div></div>
         <div>всего</div>

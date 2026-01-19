@@ -75,7 +75,7 @@ export async function scrapRoutes() {
     await db.delete(regions);
 
     // Сохранение регионов
-    if (loadedRegions.length > 0) {
+    if (loadedRegions.length) {
       loadedRegions = await db.insert(regions).values(loadedRegions).returning();
     }
     console.log('регионов: ', loadedRegions.length);
@@ -97,7 +97,7 @@ export async function scrapRoutes() {
     console.log('мест: ', loadedPlaces.length);
 
     // Сохранение мест
-    if (loadedPlaces.length > 0) {
+    if (loadedPlaces.length) {
       loadedPlaces = await db.insert(places).values(loadedPlaces).returning();
     }
 
@@ -114,15 +114,14 @@ export async function scrapRoutes() {
           try {
             const { data } = await getApiResponse(`${ALLCLIMB_URL}${place.link}`);
             const placeSectors = prepareSectors(data, place.id, place.uniqId);
-            if (Array.isArray(placeSectors)) {
+            if (Array.isArray(placeSectors) && placeSectors.length) {
               loadedSectors.push(...placeSectors);
-            }
-            console.log('загрузка мест, секторов: ', loadedSectors.length);
+            }            
           } catch (err) {
             console.log('error: ', err);
             fetchErrors.places.push(place.name);
           }
-
+          console.log('загрузка мест, секторов полученно: ', loadedSectors.length);
           await new Promise((resolve) => setTimeout(resolve, 200));
         })
       );
@@ -130,7 +129,7 @@ export async function scrapRoutes() {
     }
 
     // Сохранение секторов
-    if (loadedSectors.length > 0) {
+    if (loadedSectors.length) {
       loadedSectors = await db.insert(sectors).values(loadedSectors).returning();
     }
     console.log('секторов: ', loadedSectors.length);
@@ -147,13 +146,15 @@ export async function scrapRoutes() {
           try {
             const { data } = await getApiResponse(`${ALLCLIMB_URL}${sector.link}`);
             let sectorRoutes = prepareRoutes(data, sector.id, sector.uniqId);
-            sectorRoutes = await db.insert(routes).values(sectorRoutes).returning();
-            loadedRoutes.push(...sectorRoutes);
+            if (Array.isArray(sectorRoutes) && sectorRoutes.length) {
+              sectorRoutes = await db.insert(routes).values(sectorRoutes).returning();
+              loadedRoutes.push(...sectorRoutes);              
+            }
           } catch (err) {
             console.log('error: ', err);
             fetchErrors.sectors.push(sector.name);
           }
-          console.log('загрузка секторов, трасс: ', loadedRoutes.length);
+          console.log('загрузка секторов, трасс полученно: ', loadedRoutes.length);
           await new Promise((resolve) => setTimeout(resolve, 200));
         })
       );
@@ -175,11 +176,13 @@ export async function scrapRoutes() {
     };
 
     console.log(`
-      ошибки загрузки данных для регионов: ${stats.regionsErrors} / ${stats.regions}
-      ошибки загрузки данных для мест: ${stats.placesErrors} / ${stats.places}
-      ошибки загрузки данных для секторов: ${stats.sectorsErrors} / ${stats.sectors}
+      ошибки загрузки данных для регионов: ${stats.regionsErrors} из ${stats.regions}
+      ошибки загрузки данных для мест: ${stats.placesErrors} из ${stats.places}
+      ошибки загрузки данных для секторов: ${stats.sectorsErrors} из ${stats.sectors}
       трасс загружено: ${loadedRoutes.length}
     `);
+
+    console.log(`сектора с ошибками: ${fetchErrors.sectors.join(', ')}`);
 
     await SettingsService.updateScrapStats(stats);
 
