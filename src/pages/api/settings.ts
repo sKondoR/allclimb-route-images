@@ -4,7 +4,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'GET') {
     try {
-      const data = await SettingsService.find();
+      const data = await SettingsService.findLast();
       // console.log('✅ Settings fetched:', data);
       return res.status(200).json(data);
     } catch (error) {

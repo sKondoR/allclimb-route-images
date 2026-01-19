@@ -4,23 +4,14 @@ import useSWR from 'swr';
 const fetcher = (url: string) => fetch(url).then((r) => r.json());
 
 export default function ScrapStats() {
-  const { data, error } = useSWR<ISettings[]>('/api/settings', fetcher, {
+  const { data, error } = useSWR<ISettings>('/api/settings', fetcher, {
     revalidateOnMount: true,
   });
 
-  if (!data || data.length === 0) {
+  if (!data?.scrapStats) {
     return (
       <div className="p-5 text-white/50 text-sm relative z-20">
         {error ? 'Ошибка загрузки' : 'Загрузка...'}
-      </div>
-    );
-  }
-
-  const latestStats = data[data.length - 1].scrapStats;
-  if (!latestStats) {
-    return (
-      <div className="p-5 text-white/50 text-sm relative z-20">
-        Нет данных статистики
       </div>
     );
   }
@@ -36,7 +27,7 @@ export default function ScrapStats() {
     routesErrors,
     scrapDate,
     scrapDuration,
-  } = latestStats;
+  } = data.scrapStats;
 
   return (
     <div className="p-5 text-white/50 text-sm relative z-20">

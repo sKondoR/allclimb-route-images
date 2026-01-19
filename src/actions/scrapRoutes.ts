@@ -89,7 +89,7 @@ export async function scrapRoutes() {
         loadedPlaces.push(...(regionPlaces as IPlace[]));
       } catch (err) {
         console.log('error: ', err);
-        fetchErrors.regions.push(region.name);
+        fetchErrors.regions.push(region.link);
       }
     });
 
@@ -119,7 +119,7 @@ export async function scrapRoutes() {
             }            
           } catch (err) {
             console.log('error: ', err);
-            fetchErrors.places.push(place.name);
+            fetchErrors.places.push(place.link);
           }
           console.log('загрузка мест, секторов полученно: ', loadedSectors.length);
           await new Promise((resolve) => setTimeout(resolve, 200));
@@ -152,7 +152,7 @@ export async function scrapRoutes() {
             }
           } catch (err) {
             console.log('error: ', err);
-            fetchErrors.sectors.push(sector.name);
+            fetchErrors.sectors.push(sector.link);
           }
           console.log('загрузка секторов, трасс полученно: ', loadedRoutes.length);
           await new Promise((resolve) => setTimeout(resolve, 200));

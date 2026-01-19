@@ -1,5 +1,7 @@
 'use client';
 
+import { faArrowsRotate } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState } from 'react';
 
 export default function ScrapButton() {
@@ -33,7 +35,11 @@ export default function ScrapButton() {
         onClick={handleScrap}
         disabled={loading}
     >
-        {loading ? 'Обновление...' : 'обновить данные с Allclimb'}
+      <FontAwesomeIcon
+        icon={faArrowsRotate}
+        className={`${loading ? 'animate-[spin_1s_linear_infinite]' : ''} mr-2`}
+      />
+      {loading ? 'обновление...' : 'обновить данные с Allclimb'}
     </button>
   );
 }

@@ -19,7 +19,7 @@ export const regions = pgTable('regions', {
   name: varchar('name', { length: 255 }).notNull(),
   country: varchar('country', { length: 255 }),
   season: varchar('season', { length: 255 }),
-  link: text('link'),
+  link: text('link').notNull(),
 });
 
 export type IRegion = typeof regions.$inferSelect;
