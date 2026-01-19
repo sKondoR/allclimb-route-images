@@ -5,7 +5,6 @@ const fetcher = (url: string) => fetch(url).then((r) => r.json());
 
 export default function ScrapStats() {
   const { data, error } = useSWR<ISettings[]>('/api/settings', fetcher, {
-    refreshInterval: 60000, // Auto-refresh every 60 sec
     revalidateOnMount: true,
   });
 
