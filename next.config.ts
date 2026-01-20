@@ -4,6 +4,13 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   headers: async () => {
     const isProduction = process.env.NODE_ENV === 'production';
+    const scriptSrc = isProduction
+      ? "'self' https://i-climbed-card.vercel.app"
+      : "'self' 'unsafe-eval' http://localhost:3000 http://localhost:3001 https://i-climbed-card.vercel.app"; // ← добавлен localhost
+
+    const connectSrc = isProduction
+      ? "'self' https://i-climbed-card.vercel.app https://api.imgbb.com"
+      : "'self' http://localhost:3000 http://localhost:3001 https://i-climbed-card.vercel.app https://api.imgbb.com"; // ← для API/dev server
     return [
       // Глобальные безопасные заголовки
       {
@@ -11,9 +18,7 @@ const nextConfig: NextConfig = {
         headers: [
           {
             key: 'Content-Security-Policy',
-            value: isProduction
-              ? "default-src 'self'; script-src 'self' https://i-climbed-card.vercel.app; connect-src 'self' https://i-climbed-card.vercel.app; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; frame-ancestors 'none'; object-src 'none'; base-uri 'self';"
-              : "default-src 'self'; script-src 'self' 'unsafe-eval' https://i-climbed-card.vercel.app; connect-src 'self' https://i-climbed-card.vercel.app; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; frame-ancestors 'none'; object-src 'none'; base-uri 'self';",
+            value: `default-src 'self'; script-src ${scriptSrc}; connect-src ${connectSrc}; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; frame-ancestors 'none'; object-src 'none'; base-uri 'self';`,
           },
           { key: 'X-Frame-Options', value: 'DENY' },
           { key: 'X-Content-Type-Options', value: 'nosniff' },
