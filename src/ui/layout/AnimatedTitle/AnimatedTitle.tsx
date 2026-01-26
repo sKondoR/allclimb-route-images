@@ -11,9 +11,8 @@ export default function AnimatedTitle({
       <Link
         href={HOME}
         className={`
-          font-mono font-bold leading-[0.8]
-          bg-cover bg-center
-          text-transparent select-none
+          font-mono font-bold text-white leading-[0.8]
+          bg-cover bg-center select-none
           text-3xl md:text-6xl
           absolute z-10
 
